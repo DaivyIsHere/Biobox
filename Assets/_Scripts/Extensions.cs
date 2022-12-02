@@ -25,13 +25,13 @@ public static class Extensions
     //A very easy way to get unit by label, need CombatManager to exist
     public static Unit GetUnit(this UnitLabel label)
     {
-        if(!CombatManager.Instance)
+        if(!BattleManager.Instance)
         {
             Debug.LogError("Cannot find CombatManager.");
             return null;
         }
 
-        return CombatManager.Instance.GetUnitByLabel(label);
+        return BattleManager.Instance.GetUnitByLabel(label);
     }
 
     public static Unit GetUnit(this UnitCID unitCID)
@@ -47,23 +47,23 @@ public static class Extensions
 
     public static Box GetBox(this BoxLabel label)
     {
-        if(!CombatManager.Instance)
+        if(!BattleManager.Instance)
         {
             Debug.LogError("Cannot find CombatManager.");
             return null;
         }
 
-        return CombatManager.Instance.GetBoxesBySide(label.boxSide)[label.boxNum];
+        return BattleManager.Instance.GetBoxesBySide(label.boxSide)[label.boxNum];
     }
 
     public static Box GetBox(this UnitLabel label)
     {
-        if(!CombatManager.Instance)
+        if(!BattleManager.Instance)
         {
             Debug.LogError("Cannot find CombatManager.");
             return null;
         }
 
-        return CombatManager.Instance.GetBoxesBySide(label.boxSide)[label.boxNum];
+        return BattleManager.Instance.GetBoxesBySide(label.boxSide)[label.boxNum];
     }
 }

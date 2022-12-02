@@ -5,12 +5,30 @@ using System.Text;
 
 public class Box : MonoBehaviour
 {
+    [Header("Reference")]
+    public Transform unitsContainer;
+
+    [Header("Visual")]
+    [SerializeField] private SpriteRenderer _boxBG;
+    [SerializeField] private Color _defaultColor;
+    [SerializeField] private Color _highlightColor;
+    
     [Header("Unit")]
     public BoxData boxData;
     public List<Unit> unitList;
 
     [Header("Label")]
     public BoxLabel boxLabel;
+
+    public void HighlightBox()
+    {
+        _boxBG.color = _highlightColor;
+    }
+
+    public void UnhighlightBox()
+    {
+        _boxBG.color = _defaultColor;
+    }
 }
 
 public enum BoxSide

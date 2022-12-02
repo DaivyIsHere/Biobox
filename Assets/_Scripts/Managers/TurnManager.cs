@@ -8,12 +8,17 @@ public class TurnManager : Singleton<TurnManager>
     [Header("TurnState")]
     public TurnState currentTurnState;
     public BoxSide currentSide;// which side's turn
+    public int turnCount;
     public bool isResolving;
 
+    public static event Action OnBattleStart;
+    public static event Action<BoxSide> OnTurnStart;
+    public static event Action<BoxSide> OnWaitForPlayerTakeTurn;
+    public static event Action<BoxSide> OnPlayerTakeTurn;
+    public static event Action<BoxSide> OnTurnEnd;
     public static event Action<TurnState> OnTurnStateChanged;
-    public static event Action<TurnState> OnTurnStart;
 
-    void Start()
+    public void StartTurnManaging()//called by battleManager
     {
         UpdateTurnState(TurnState.BattleStart);
     }
@@ -26,25 +31,29 @@ public class TurnManager : Singleton<TurnManager>
         {
             case TurnState.BattleStart:
                 HandleBattleStart();
+                OnBattleStart?.Invoke();
                 break;
             case TurnState.TurnStart:
                 HandleTurnStart();
-                OnTurnStart?.Invoke(TurnState.TurnStart);
+                OnTurnStart?.Invoke(currentSide);
                 break;
             case TurnState.WaitForCurrentPlayer:
                 HandleWaitForCurrentPlayer();
+                OnWaitForPlayerTakeTurn?.Invoke(currentSide);
                 break;
             case TurnState.TurnEnd:
                 HandleTurnEnd();
+                OnTurnEnd?.Invoke(currentSide);
                 break;
         }
 
         OnTurnStateChanged?.Invoke(newState);
     }
 
-    public void OnPlayerTakeTurn()
+    public void PlayerTakeTurn()//called by UnitCombat.cs after attack
     {
         isResolving = true;
+        OnPlayerTakeTurn?.Invoke(currentSide);
         StartCoroutine(ResolvingCurrentTurn(TurnState.TurnEnd));
     }
 
@@ -63,6 +72,7 @@ public class TurnManager : Singleton<TurnManager>
 
     private void HandleBattleStart()
     {
+        turnCount = 1;
         UpdateTurnState(TurnState.TurnStart);
     }
 
@@ -79,6 +89,7 @@ public class TurnManager : Singleton<TurnManager>
     private void HandleTurnEnd()
     {
         currentSide = currentSide.Opposite();
+        turnCount += 1;
         UpdateTurnState(TurnState.TurnStart);
     }
 

@@ -13,6 +13,6 @@ public class CCAlignUnits : CCommand
 
     public override void StartCommandExecution()
     {
-        CombatManager.Instance.StartCoroutine(CombatManager.Instance.AlignAllUnitsCommand(_boxSide));
+        BattleManager.Instance.StartCoroutine(BattleManager.Instance.AlignAllUnitsCommand(_boxSide));
     }
 }

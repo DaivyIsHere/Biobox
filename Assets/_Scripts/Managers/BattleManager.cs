@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CombatManager : Singleton<CombatManager>
+public class BattleManager : Singleton<BattleManager>
 {
     [Header("Reference")]
     public List<Box> leftBoxes;
@@ -15,10 +15,16 @@ public class CombatManager : Singleton<CombatManager>
     [SerializeField] private GameObject _boxPref;
     [SerializeField] private GameObject _unitPref;
 
-    void Start()
+    void Start() 
+    {
+        InitializeBattle();    
+    }
+
+    public void InitializeBattle()//called from TurnManager
     {
         SpawnAllBoxes();
         SpawnAllUnitsInBoxes();
+        TurnManager.Instance.StartTurnManaging();
     }
 
     private void SpawnAllBoxes()
@@ -28,7 +34,7 @@ public class CombatManager : Singleton<CombatManager>
         {
             var boxData = GameManager.Instance.leftBoxesUnits[i];
 
-            Box newBox = Instantiate(_boxPref, _boardLayout.GetBoxBoardPosition(BoxSide.LeftSide, i), Quaternion.identity, _boardLayout.transform).GetComponent<Box>();
+            Box newBox = Instantiate(_boxPref, _boardLayout.GetBoxBoardPosition(BoxSide.LeftSide, i), Quaternion.identity, _boardLayout.boxesContainer).GetComponent<Box>();
             newBox.boxData = boxData;
             newBox.boxLabel = new BoxLabel(BoxSide.LeftSide, i);
             newBox.gameObject.name = newBox.boxLabel.GetName();
@@ -40,7 +46,7 @@ public class CombatManager : Singleton<CombatManager>
         {
             var boxData = GameManager.Instance.rightBoxesUnits[i];
 
-            Box newBox = Instantiate(_boxPref, _boardLayout.GetBoxBoardPosition(BoxSide.RightSide, i), Quaternion.identity, _boardLayout.transform).GetComponent<Box>();
+            Box newBox = Instantiate(_boxPref, _boardLayout.GetBoxBoardPosition(BoxSide.RightSide, i), Quaternion.identity, _boardLayout.boxesContainer).GetComponent<Box>();
             newBox.boxData = boxData;
             newBox.boxLabel = new BoxLabel(BoxSide.RightSide, i);
             newBox.gameObject.name = newBox.boxLabel.GetName();
@@ -55,7 +61,7 @@ public class CombatManager : Singleton<CombatManager>
         {
             for (int i = 0; i < box.boxData.unitDataList.Count; i++)
             {
-                Unit newUnit = Instantiate(_unitPref, box.transform).GetComponent<Unit>();
+                Unit newUnit = Instantiate(_unitPref, box.unitsContainer).GetComponent<Unit>();
                 newUnit.transform.localPosition = _boardLayout.GetUnitBoardPosition(BoxSide.LeftSide, i);
                 newUnit.unitData = box.boxData.unitDataList[i];
                 newUnit.unitLabel = new UnitLabel(box.boxLabel, i);
@@ -70,7 +76,7 @@ public class CombatManager : Singleton<CombatManager>
         {
             for (int i = 0; i < box.boxData.unitDataList.Count; i++)
             {
-                Unit newUnit = Instantiate(_unitPref, box.transform).GetComponent<Unit>();
+                Unit newUnit = Instantiate(_unitPref, box.unitsContainer).GetComponent<Unit>();
                 newUnit.transform.localPosition = _boardLayout.GetUnitBoardPosition(BoxSide.RightSide, i);
                 newUnit.unitData = box.boxData.unitDataList[i];
                 newUnit.unitLabel = new UnitLabel(box.boxLabel, i);
@@ -161,7 +167,7 @@ public class CombatManager : Singleton<CombatManager>
         return null;
     }
 
-    //Use label.GetBox() instead.
+    //Use label.GetBox() for a single box instead.
     public List<Box> GetBoxesBySide(BoxSide side)
     {
         if (side == BoxSide.LeftSide)

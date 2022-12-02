@@ -31,6 +31,7 @@ public class UnitCombat : MonoBehaviour
     }
 
     [field: Header("Status")]
+    [SerializeField] public bool canAttack = false;//set by player
     [field: SerializeField] public bool exhausted { get;  set; } = false;
 
     void Start()
@@ -40,16 +41,15 @@ public class UnitCombat : MonoBehaviour
 
     private void OnMouseDown()
     {
-        if (exhausted)
+        if(!canAttack)
             return;
-
-        if(!TurnManager.Instance.CanTakeTurn(_unit.unitLabel.boxSide))
+        if (exhausted)
             return;
 
         exhausted = true;
         
         Attack();
-        TurnManager.Instance.OnPlayerTakeTurn();
+        TurnManager.Instance.PlayerTakeTurn();
     }
 
     public void ResolveStatChanges(UnitStats statsChange)
@@ -80,7 +80,7 @@ public class UnitCombat : MonoBehaviour
     {
         new CCUnitAttack(_unit.unitCID).AddToQueue(); // Visual
 
-        Unit target = CombatManager.Instance.GetFirstTargetByLabel(_unit.unitLabel);
+        Unit target = BattleManager.Instance.GetFirstTargetByLabel(_unit.unitLabel);
         if (!target)
             return;
         target.unitCombat.TakeDamage(stats.attack);
@@ -89,7 +89,7 @@ public class UnitCombat : MonoBehaviour
 
     public void Die()
     {
-        CombatManager.Instance.DespawnUnit(_unit);
+        BattleManager.Instance.DespawnUnit(_unit);
     }
 
     public bool IsDead()
