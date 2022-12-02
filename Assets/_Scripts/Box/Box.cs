@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Text;
 
 public class Box : MonoBehaviour
 {
@@ -8,16 +9,37 @@ public class Box : MonoBehaviour
     public BoxData boxData;
     public List<Unit> unitList;
 
-    [Header("Layout")]
-    public BoxSide boxSide;
-    public int boxNum = 1;
-    
-    private float _unitWidth = 3;
-    private float _unitSpacing = 0.5f;
+    [Header("Label")]
+    public BoxLabel boxLabel;
 }
 
 public enum BoxSide
 {
     LeftSide,
     RightSide
+}
+
+[System.Serializable]
+public struct BoxLabel
+{
+    public BoxSide boxSide;
+    public int boxNum;
+
+    public BoxLabel(BoxSide side, int num)
+    {
+        boxSide = side;
+        boxNum = num;
+    }
+
+    public string GetName()
+    {
+        StringBuilder sb = new StringBuilder("Box");
+        if(boxSide == BoxSide.LeftSide)
+            sb.Append("_left");
+        else if(boxSide == BoxSide.RightSide)
+            sb.Append("_right");
+        sb.Append("_" + boxNum.ToString());
+
+        return sb.ToString();
+    }
 }

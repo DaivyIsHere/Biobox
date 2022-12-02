@@ -340,11 +340,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45e00cd65dfdf4147bee361c2b9f9460, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _unitAnimation: {fileID: 3510045427282510642}
-  _unitCombat: {fileID: 3574618926649868495}
+  <unitAnimation>k__BackingField: {fileID: 3510045427282510642}
+  <unitCombat>k__BackingField: {fileID: 3574618926649868495}
   unitData: {fileID: 0}
-  boxSide: 0
-  boxNum: 0
+  unitLabel:
+    boxLabel:
+      boxSide: 0
+      boxNum: 0
+    orderInBox: 0
+  unitCID:
+    id: 0
   _unitSprite: {fileID: 8676933619059120335}
   _nameDisplay: {fileID: 5301034598986485473}
   _healthDisplay: {fileID: 8676933617213128550}
@@ -363,7 +368,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _unit: {fileID: 3324055799317386516}
   _unitAnimation: {fileID: 3510045427282510642}
-  <canAttack>k__BackingField: 1
+  _stats:
+    attack: 0
+    maxHealth: 0
+    health: 0
+  <exhausted>k__BackingField: 0
 --- !u!114 &3510045427282510642
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -376,11 +385,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa18573bfed592341b8382a7c6694391, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animateTarget: {fileID: 8676933619059120334}
+  _unit: {fileID: 3324055799317386516}
+  _unitSprite: {fileID: 8676933619059120334}
+  _unitObject: {fileID: 8676933618571540065}
+  _unitBG: {fileID: 8676933617152596172}
+  _valuePopupPref: {fileID: 8343687921870290610, guid: a8a5ffa9872379a4c856b6854de3c4bd, type: 3}
+  _valuePopupOffset: {x: 0, y: 1.2, z: 0}
   _attackVector: {x: 0.5, y: 0, z: 0}
   _attackDuration: 0.5
   _attackVibrato: 6
   _attackElast: 0.2
+  defaultColor: {r: 1, g: 1, b: 1, a: 0.11372549}
+  exhaustedColor: {r: 1, g: 1, b: 1, a: 0.03137255}
 --- !u!58 &1506114474282583378
 CircleCollider2D:
   m_ObjectHideFlags: 0

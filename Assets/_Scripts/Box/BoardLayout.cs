@@ -15,7 +15,7 @@ public class BoardLayout : MonoBehaviour
     private float _boxHeight = 4;
     private float _boxSpacing = 0.5f;
 
-    public Vector3 GetBoxSpawnPosition(BoxSide boxSide, int boxNum)
+    public Vector3 GetBoxBoardPosition(BoxSide boxSide, int boxNum)
     {
         Vector3 result = Vector3.zero;
 
@@ -29,7 +29,7 @@ public class BoardLayout : MonoBehaviour
         return result;
     }
 
-    public Vector3 GetUnitSpawnPosition(BoxSide boxSide, int order)
+    public Vector3 GetUnitBoardPosition(BoxSide boxSide, int order)
     {
         Vector3 result = Vector3.zero;
         if (boxSide == BoxSide.LeftSide)

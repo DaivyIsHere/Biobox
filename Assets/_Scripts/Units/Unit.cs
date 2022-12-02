@@ -5,14 +5,14 @@ using TMPro;
 
 public class Unit : MonoBehaviour
 {
-    [Header("Component")]
-    [SerializeField] private UnitAnimation _unitAnimation;
-    [SerializeField] private UnitCombat _unitCombat;
+    [field: Header("Component")]
+    [field: SerializeField] public UnitAnimation unitAnimation { get; private set; }
+    [field: SerializeField] public UnitCombat unitCombat { get; private set; }
 
     [Header("Info")]
     public ScriptableUnitData unitData;
-    public BoxSide boxSide;
-    public int boxNum;
+    public UnitLabel unitLabel;
+    public UnitCID unitCID;
 
     [Header("Display")]
     [SerializeField] private SpriteRenderer _unitSprite;
@@ -36,17 +36,59 @@ public class Unit : MonoBehaviour
 
         _nameDisplay.text = unitData.name;
         _unitSprite.sprite = unitData.sprite;
-        OnHealthChange();
-        OnAttackChange();
+        OnHealthChange(unitData.stats.health);
+        OnAttackChange(unitData.stats.attack);
     }
 
-    private void OnHealthChange()
+    public void OnHealthChange(int newValue)
     {
-        _healthDisplay.text = unitData.stats.health.ToString();
+        _healthDisplay.text = newValue.ToString();
     }
 
-    private void OnAttackChange()
+    public void OnAttackChange(int newValue)
     {
-        _attackDisplay.text = unitData.stats.attack.ToString();
+        _attackDisplay.text = newValue.ToString();
+    }
+
+    public void DestroySelf()//should only called by animation.PlayDeath() by CCUnitDie
+    {
+        IDManager.Instance.RemoveUnitCID(unitCID);
+        CCommand.CommandExecutionComplete();
+        Destroy(this.gameObject);
+    }
+}
+
+[System.Serializable]
+public struct UnitLabel
+{
+    public BoxLabel boxLabel;
+    public int orderInBox;// 0 = first unit in the front
+
+    //property for quicker access
+    public BoxSide boxSide { get { return boxLabel.boxSide; } }
+    public int boxNum { get { return boxLabel.boxNum; } }
+
+    public UnitLabel(BoxLabel boxlabel, int unitOrderInBox)
+    {
+        this.boxLabel = boxlabel;
+        this.orderInBox = unitOrderInBox;
+    }
+
+    public UnitLabel(BoxSide boxSide, int boxNum, int unitOrderInBox)
+    {
+        this.boxLabel = new BoxLabel(boxSide, boxNum);
+        this.orderInBox = unitOrderInBox;
+    }
+}
+
+//Unit CombatID
+[System.Serializable]
+public struct UnitCID
+{
+    public int id;
+
+    public UnitCID(int id)
+    {
+        this.id = id;
     }
 }
