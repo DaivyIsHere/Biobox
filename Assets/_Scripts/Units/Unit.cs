@@ -36,8 +36,6 @@ public class Unit : MonoBehaviour
 
         _nameDisplay.text = unitData.name;
         _unitSprite.sprite = unitData.sprite;
-        OnHealthChange(unitData.stats.health);
-        OnAttackChange(unitData.stats.attack);
     }
 
     public void OnHealthChange(int newValue)

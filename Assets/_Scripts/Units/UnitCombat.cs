@@ -11,24 +11,6 @@ public class UnitCombat : MonoBehaviour
 
     [Header("CurrentStats")]
     [SerializeField] private UnitStats _stats;
-    public UnitStats stats
-    {
-        get
-        {
-            return _stats;
-        }
-        private set
-        {
-            //maxhealth
-            _stats.maxHealth = value.maxHealth > 0 ? value.maxHealth : 1;
-
-            //health
-            _stats.health = Mathf.Clamp(value.health, 0, _stats.maxHealth);
-
-            //attack
-            _stats.attack = value.attack >= 0 ? value.attack : 0;
-        }
-    }
 
     [field: Header("Status")]
     [SerializeField] public bool canAttack = false;//set by player
@@ -36,7 +18,20 @@ public class UnitCombat : MonoBehaviour
 
     void Start()
     {
-        stats = _unit.unitData.stats;
+        IniStats();
+        _stats.attack.onValueChanged += _unit.OnAttackChange;
+        _stats.health.onCurrentValueChanged += _unit.OnHealthChange;
+        
+        _unit.OnHealthChange(_stats.health.currentValue);
+        _unit.OnAttackChange(_stats.attack.value);
+    }
+
+    private void IniStats()
+    {
+        _stats = new UnitStats(
+            _unit.unitData.baseStats.attackBase,
+            _unit.unitData.baseStats.healthBase,
+            _unit.unitData.baseStats.shieldBase);
     }
 
     private void OnMouseDown()
@@ -52,26 +47,21 @@ public class UnitCombat : MonoBehaviour
         TurnManager.Instance.PlayerTakeTurn();
     }
 
-    public void ResolveStatChanges(UnitStats statsChange)
-    {
-        stats += statsChange;
-    }
-
     public void TakeDamage(int damageValue)
     {
         if (damageValue > 0)
         {
-            ResolveStatChanges(new UnitStats(0, 0, -1 * damageValue));
+            _stats.health.ApplyModifier(new StatModifier(-1*damageValue, StatModType.Additive));
             if (IsDead())
             {
                 // TODO command to play animation that we can know if a turn is end or not
-                new CCUnitTakeDamage(_unit.unitCID, damageValue, stats.health, true).AddToQueue();
+                new CCUnitTakeDamage(_unit.unitCID, damageValue, _stats.health.currentValue, true).AddToQueue();
                 new CCUnitDie(_unit.unitCID).AddToQueue();
                 Die();
             }
             else
             {
-                new CCUnitTakeDamage(_unit.unitCID, damageValue, stats.health, false).AddToQueue();
+                new CCUnitTakeDamage(_unit.unitCID, damageValue, _stats.health.currentValue, false).AddToQueue();
             }
         }
     }
@@ -83,7 +73,7 @@ public class UnitCombat : MonoBehaviour
         Unit target = BattleManager.Instance.GetFirstTargetByLabel(_unit.unitLabel);
         if (!target)
             return;
-        target.unitCombat.TakeDamage(stats.attack);
+        target.unitCombat.TakeDamage(_stats.attack.value);
 
     }
 
@@ -94,6 +84,6 @@ public class UnitCombat : MonoBehaviour
 
     public bool IsDead()
     {
-        return stats.health <= 0;
+        return _stats.health.currentValue <= 0;
     }
 }

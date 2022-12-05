@@ -14,15 +14,11 @@ public class ScriptableUnitData : ScriptableObject
     public string description;
     public Sprite sprite;
 
-    [Header("Unit Stats")]
-    public UnitStats stats;
+    [Header("Unit BaseStats")]
+    public UnitBaseStats baseStats;
 
     private void OnValidate()
     {
-        //Validate Stats
-        stats.maxHealth = stats.maxHealth > 0 ? stats.maxHealth : 1;
-        stats.health = stats.maxHealth; // currently we want it to be the same as maxhealth on start
-
         // Get a unique identifier from the asset's unique 'Asset Path' (ex : Resources/UniData/Plunny.asset)
         // If you do change it and want to change back, just erase the uniqueID in the inspector and it will refill itself.
         if (unitId == "")
@@ -33,30 +29,12 @@ public class ScriptableUnitData : ScriptableObject
 #endif
         }
     }
-
 }
 
 [System.Serializable]
-public struct UnitStats
+public class UnitBaseStats
 {
-    public int attack;
-    public int maxHealth;
-    public int health;
-
-    public UnitStats(int attack, int maxHealth, int health)
-    {
-        this.attack = attack;
-        this.maxHealth = maxHealth;
-        this.health = health;
-    }
-
-    public static UnitStats operator +(UnitStats a, UnitStats b)
-    {
-        return new UnitStats
-        {
-            attack = a.attack + b.attack,
-            maxHealth = a.maxHealth + b.maxHealth,
-            health = a.health + b.health
-        };
-    }
+    public int attackBase;
+    public int healthBase;
+    public int shieldBase;
 }

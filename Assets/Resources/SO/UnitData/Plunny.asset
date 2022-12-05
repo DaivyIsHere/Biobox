@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8a9794bd31d91184e8f56aa1a03cb136, type: 3}
-  m_Name: Boarg
+  m_Name: Plunny
   m_EditorClassIdentifier: 
-  unitId: d3da1e47c875d1f41ae0b6d513acb2ee
-  unitName: Boarg
+  unitId: c67f140469c5b1b4fa1022a0d1e8939b
+  unitName: Plunny
   description: 
   sprite: {fileID: 21300000, guid: 0ac55f9f886d827408c102bdf33c5ff7, type: 3}
-  stats:
-    attack: 1
-    maxHealth: 4
-    health: 4
+  baseStats:
+    attackBase: 2
+    healthBase: 2
+    shieldBase: 0
