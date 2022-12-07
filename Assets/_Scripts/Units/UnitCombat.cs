@@ -14,16 +14,23 @@ public class UnitCombat : MonoBehaviour
 
     [field: Header("Status")]
     [SerializeField] public bool canAttack = false;//set by player
-    [field: SerializeField] public bool exhausted { get;  set; } = false;
+    [field: SerializeField] public bool exhausted { get; set; } = false;
+
+    [Header("Status Effect")]
+    [SerializeField] private StatusEffectDatabase _effectDatabase;
+    [SerializeField] private UnitStatusEffects _statusEffects;
 
     void Start()
     {
         IniStats();
-        _stats.attack.onValueChanged += _unit.OnAttackChange;
-        _stats.health.onCurrentValueChanged += _unit.OnHealthChange;
-        
-        _unit.OnHealthChange(_stats.health.currentValue);
-        _unit.OnAttackChange(_stats.attack.value);
+
+        _unit.UpdateHealthDisplay(_stats.health.currentValue);
+        _unit.UpdateAttackDisplay(_stats.attack.value);
+        _unit.UpdateShieldDisplay(_stats.shield.value);
+
+        _statusEffects._effects.Add(_effectDatabase.exhausted,new StatusEffect(_effectDatabase.exhausted, 5));
+        print(_statusEffects._effects[_effectDatabase.exhausted].stack);
+
     }
 
     private void IniStats()
@@ -36,33 +43,64 @@ public class UnitCombat : MonoBehaviour
 
     private void OnMouseDown()
     {
-        if(!canAttack)
+        if (!canAttack)
             return;
         if (exhausted)
             return;
 
         exhausted = true;
-        
+
         Attack();
         TurnManager.Instance.PlayerTakeTurn();
     }
 
     public void TakeDamage(int damageValue)
     {
-        if (damageValue > 0)
+        if (damageValue <= 0)
+            return;
+        
+        int damageToTake = 0;
+        int shieldBreakValue = 0;
+        if (HasShield())
         {
-            _stats.health.ApplyModifier(new StatModifier(-1*damageValue, StatModType.Additive));
-            if (IsDead())
+            //Damage greater than shield
+            if (damageValue >= _stats.shield.value)
             {
-                // TODO command to play animation that we can know if a turn is end or not
-                new CCUnitTakeDamage(_unit.unitCID, damageValue, _stats.health.currentValue, true).AddToQueue();
-                new CCUnitDie(_unit.unitCID).AddToQueue();
-                Die();
+                damageToTake = damageValue - _stats.shield.value;
+                shieldBreakValue = _stats.shield.value;
+                _stats.shield.AddModifier(new StatModifier(-1 * shieldBreakValue, StatModType.Additive));
+                _stats.health.ApplyModifier(new StatModifier(-1 * damageToTake, StatModType.Additive));
+
+                new CCUnitShieldBreak(_unit.unitCID, shieldBreakValue, _stats.shield.value).AddToQueue();
+                if (damageToTake > 0)
+                    new CCUnitTakeDamage(_unit.unitCID, damageToTake, _stats.health.currentValue).AddToQueue();
+
             }
-            else
+            else if (damageValue < _stats.shield.value)
             {
-                new CCUnitTakeDamage(_unit.unitCID, damageValue, _stats.health.currentValue, false).AddToQueue();
+                shieldBreakValue = Mathf.CeilToInt(damageValue * 0.5f);
+                _stats.shield.AddModifier(new StatModifier(-1 * shieldBreakValue, StatModType.Additive));
+
+                new CCUnitShieldBreak(_unit.unitCID, shieldBreakValue, _stats.shield.value).AddToQueue();
             }
+        }
+        else
+        {
+            damageToTake = damageValue;
+            _stats.health.ApplyModifier(new StatModifier(-1 * damageToTake, StatModType.Additive));
+
+            new CCUnitTakeDamage(_unit.unitCID, damageToTake, _stats.health.currentValue).AddToQueue();
+        }
+        
+        //dead or not
+        if (!IsDead())
+        {
+            new CCUnitHurt(_unit.unitCID).AddToQueue();
+        }
+        else
+        {
+            new CCUnitDie(_unit.unitCID).AddToQueue();
+            Die();
         }
     }
 
@@ -73,13 +111,18 @@ public class UnitCombat : MonoBehaviour
         Unit target = BattleManager.Instance.GetFirstTargetByLabel(_unit.unitLabel);
         if (!target)
             return;
-        target.unitCombat.TakeDamage(_stats.attack.value);
-
+        if (_stats.attack.value > 0)
+            target.unitCombat.TakeDamage(_stats.attack.value);
     }
 
     public void Die()
     {
         BattleManager.Instance.DespawnUnit(_unit);
+    }
+
+    public bool HasShield()
+    {
+        return _stats.shield.value > 0;
     }
 
     public bool IsDead()

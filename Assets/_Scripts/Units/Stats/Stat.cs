@@ -60,6 +60,7 @@ public class Stat
     {
         _isDirty = true;
         _statModifiers.Add(mod);
+        CalculateFinalValue();
     }
 
     public virtual bool RemoveModifier(StatModifier mod)
@@ -67,6 +68,7 @@ public class Stat
         if (_statModifiers.Remove(mod))
         {
             _isDirty = true;
+            CalculateFinalValue();
             return true;
         }
         return false;

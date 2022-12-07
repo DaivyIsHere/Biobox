@@ -218,7 +218,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   displayValue: 0
-  type: 0
+  popupType: 0
   targetText: {fileID: 3028519241063086479}
   punchScale: {x: 1.5, y: 1.5, z: 0}
   punchDuration: 0.5
@@ -228,5 +228,7 @@ MonoBehaviour:
   moveDuration: 1
   damageStartColor: {r: 0.745283, g: 0.23483442, b: 0.23483442, a: 1}
   damageEndColor: {r: 0.74509805, g: 0.23529412, b: 0.23529412, a: 0}
-  healStartColor: {r: 0, g: 0, b: 0, a: 0}
-  healEndColor: {r: 0, g: 0, b: 0, a: 0}
+  healStartColor: {r: 0.20206477, g: 0.6226415, b: 0.20950857, a: 1}
+  healEndColor: {r: 0.20392157, g: 0.62352943, b: 0.20784314, a: 0}
+  shieldStartColor: {r: 0.6509434, g: 0.6509434, b: 0.6509434, a: 1}
+  shieldEndColor: {r: 0.6509804, g: 0.6509804, b: 0.6509804, a: 0}

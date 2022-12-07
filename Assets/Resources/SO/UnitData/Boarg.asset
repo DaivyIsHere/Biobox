@@ -15,7 +15,7 @@ MonoBehaviour:
   unitId: d3da1e47c875d1f41ae0b6d513acb2ee
   unitName: Boarg
   description: 
-  sprite: {fileID: 21300000, guid: 0ac55f9f886d827408c102bdf33c5ff7, type: 3}
+  sprite: {fileID: 21300000, guid: da545229eea36164d8b8cba2f75a1143, type: 3}
   baseStats:
     attackBase: 1
     healthBase: 4

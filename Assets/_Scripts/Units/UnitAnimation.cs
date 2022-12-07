@@ -14,7 +14,8 @@ public class UnitAnimation : MonoBehaviour
 
     [Header("DamageEffect")]
     [SerializeField] private ValuePopup _valuePopupPref;
-    [SerializeField] private Vector3 _valuePopupOffset;
+    [SerializeField] private Vector3 _valuePopupOffset_Damage;
+    [SerializeField] private Vector3 _valuePopupOffset_Shield;
 
     [Header("StartValue")]
     private Vector3 _startLocalPos;
@@ -60,26 +61,31 @@ public class UnitAnimation : MonoBehaviour
         PlayExhaust();
     }
 
-    public void PlayTakeDamage(int damageValue, int healthAfter, bool killed)
+    public void PlayTakeDamage(int damageValue, int healthAfter)
     {
-        //print(_unit.unitData.unitName + " "+ _unit.orderInBox + " play hit");
-        ValuePopup valuePopup = Instantiate(_valuePopupPref, transform.position + _valuePopupOffset, Quaternion.identity);
+        ValuePopup valuePopup = Instantiate(_valuePopupPref, transform.position + _valuePopupOffset_Damage, Quaternion.identity);
+        valuePopup.popupType = ValuePopupType.Damage;
         valuePopup.displayValue = damageValue;
 
-        _unit.OnHealthChange(healthAfter);
+        _unit.UpdateHealthDisplay(healthAfter);
+    }
 
-        if (!killed)
-        {
-            ResetAllTweens();
-            _sequence = DOTween.Sequence();//Start sequence
-            _sequence.AppendInterval(0.075f);
-            _sequence.Append(_unitSprite.DOPunchScale(new Vector3(-0.3f, 0.4f, 0), _attackDuration, _attackVibrato, _attackElast));
-            _sequence.OnComplete(CCommand.CommandExecutionComplete);
-        }
-        else
-        {
-            CCommand.CommandExecutionComplete();
-        }
+    public void PlayShieldBreak(int shieldBreakValue, int shieldAfter)
+    {
+        ValuePopup valuePopup = Instantiate(_valuePopupPref, transform.position + _valuePopupOffset_Shield, Quaternion.identity);
+        valuePopup.popupType = ValuePopupType.Shield;
+        valuePopup.displayValue = shieldBreakValue;
+
+        _unit.UpdateShieldDisplay(shieldAfter);
+    }
+
+    public void PlayHurt()
+    {
+        ResetAllTweens();
+        _sequence = DOTween.Sequence();//Start sequence
+        _sequence.AppendInterval(0.075f);
+        _sequence.Append(_unitSprite.DOPunchScale(new Vector3(-0.3f, 0.4f, 0), _attackDuration, _attackVibrato, _attackElast));
+        _sequence.OnComplete(CCommand.CommandExecutionComplete);
     }
 
     public void PlayAlign(Vector3 newPosition, float duration)
@@ -103,11 +109,11 @@ public class UnitAnimation : MonoBehaviour
 
     public void PlayExhaust()
     {
-        _unitBG.DOColor(exhaustedColor,0.2f);
+        _unitBG.DOColor(exhaustedColor, 0.2f);
     }
 
     public void PlayUnexhaust()
     {
-        _unitBG.DOColor(defaultColor,0.5f);
+        _unitBG.DOColor(defaultColor, 0.5f);
     }
 }

@@ -8,7 +8,7 @@ public class ValuePopup : MonoBehaviour
 {
     [Header("Info")]
     public int displayValue;
-    public ValuePopupType type;
+    public ValuePopupType popupType;
 
     [Header("Reference")]
     [SerializeField] private TextMeshPro targetText;
@@ -29,16 +29,23 @@ public class ValuePopup : MonoBehaviour
     [SerializeField] private Color healStartColor;
     [SerializeField] private Color healEndColor;
 
+    [Header("Shield")]
+    [SerializeField] private Color shieldStartColor;
+    [SerializeField] private Color shieldEndColor;
+
     void Start()
     {
         InitializeDisplay();
-        switch (type)
+        switch (popupType)
         {
             case ValuePopupType.Damage:
                 DisplayDamage();
                 break;
             case ValuePopupType.Heal:
                 DisplayHeal();
+                break;
+            case ValuePopupType.Shield:
+                DisplayShield();
                 break;
         }
         // TODO self Destroy
@@ -47,14 +54,11 @@ public class ValuePopup : MonoBehaviour
     private void InitializeDisplay()
     {
         targetText.text = displayValue.ToString();
-        if (type == ValuePopupType.Damage)
-            targetText.color = damageStartColor;
-        else if (type == ValuePopupType.Heal)
-            targetText.color = healStartColor;
     }
 
     private void DisplayDamage()
     {
+        targetText.color = damageStartColor;
         var sequence = DOTween.Sequence();
         sequence.Append(targetText.transform.DOPunchScale(punchScale, punchDuration, punchVibrato, punchElast));
         sequence.Join(targetText.transform.DOLocalMoveY(endPosY, moveDuration).SetEase(Ease.OutQuint));
@@ -64,10 +68,21 @@ public class ValuePopup : MonoBehaviour
 
     private void DisplayHeal()
     {
+        targetText.color = healStartColor;
         var sequence = DOTween.Sequence();
         sequence.Append(targetText.transform.DOPunchScale(punchScale, punchDuration, punchVibrato, punchElast));
         sequence.Join(targetText.transform.DOLocalMoveY(endPosY, moveDuration).SetEase(Ease.OutQuint));
-        sequence.Join(targetText.DOColor(damageEndColor, moveDuration).SetEase(Ease.InQuint));
+        sequence.Join(targetText.DOColor(healEndColor, moveDuration).SetEase(Ease.InQuint));
+        sequence.OnComplete(() => SelfDestroy());
+    }
+
+    private void DisplayShield()
+    {
+        targetText.color = shieldStartColor;
+        var sequence = DOTween.Sequence();
+        sequence.Append(targetText.transform.DOPunchScale(punchScale, punchDuration, punchVibrato, punchElast));
+        sequence.Join(targetText.transform.DOLocalMoveY(endPosY, moveDuration).SetEase(Ease.OutQuint));
+        sequence.Join(targetText.DOColor(shieldEndColor, moveDuration).SetEase(Ease.InQuint));
         sequence.OnComplete(() => SelfDestroy());
     }
 
@@ -82,4 +97,5 @@ public enum ValuePopupType
 {
     Damage,
     Heal,
+    Shield
 }

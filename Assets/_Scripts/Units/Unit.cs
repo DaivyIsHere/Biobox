@@ -19,6 +19,7 @@ public class Unit : MonoBehaviour
     [SerializeField] private TextMeshPro _nameDisplay;
     [SerializeField] private TextMeshPro _healthDisplay;
     [SerializeField] private TextMeshPro _attackDisplay;
+    [SerializeField] private TextMeshPro _shieldDisplay;
 
     #region MonoCall
 
@@ -38,14 +39,23 @@ public class Unit : MonoBehaviour
         _unitSprite.sprite = unitData.sprite;
     }
 
-    public void OnHealthChange(int newValue)
+    public void UpdateAttackDisplay(int newValue)
+    {
+        _attackDisplay.text = newValue.ToString();
+    }
+
+    public void UpdateHealthDisplay(int newValue)
     {
         _healthDisplay.text = newValue.ToString();
     }
 
-    public void OnAttackChange(int newValue)
+    public void UpdateShieldDisplay(int newValue)
     {
-        _attackDisplay.text = newValue.ToString();
+        _shieldDisplay.text = newValue.ToString();
+        if(newValue > 0)
+            _shieldDisplay.gameObject.SetActive(true);
+        else
+            _shieldDisplay.gameObject.SetActive(false);
     }
 
     public void DestroySelf()//should only called by animation.PlayDeath() by CCUnitDie
