@@ -6,10 +6,10 @@ using System;
 [Serializable]
 public class StatModifier
 {
-    public readonly float value;
-    public readonly StatModType type;
-    public readonly int order;
-    public readonly object source;
+    public float value;
+    public StatModType type;
+    public int order;
+    public object source;
 
     public StatModifier(float value, StatModType type, int order, object source)
     {

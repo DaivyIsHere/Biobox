@@ -7,7 +7,7 @@ using System;
 public class Stat
 {
     [Tooltip("Definition")]
-    public StatDefinition statDefinition;
+    public StatDefinition definition;
 
     [Tooltip("Base value")]
     [SerializeField] protected int _baseValue;
@@ -48,7 +48,7 @@ public class Stat
 
     public Stat(StatDefinition statDefinition)
     {
-        this.statDefinition = statDefinition;
+        this.definition = statDefinition;
     }
 
     public Stat(StatDefinition statDefinition , int baseValue) : this(statDefinition)
@@ -134,9 +134,9 @@ public class Stat
             }
         }
 
-        if (statDefinition.valueCap >= 0)//-1 means there's no cap
+        if (definition.valueCap >= 0)//-1 means there's no cap
         {
-            newValue = Mathf.Min(newValue, statDefinition.valueCap);
+            newValue = Mathf.Min(newValue, definition.valueCap);
         }
 
         if(_value != newValue)

@@ -12,13 +12,12 @@ public class UnitCombat : MonoBehaviour
     [Header("CurrentStats")]
     [SerializeField] private UnitStats _stats;
 
-    [field: Header("Status")]
-    [SerializeField] public bool canAttack = false;//set by player
-    [field: SerializeField] public bool exhausted { get; set; } = false;
-
     [Header("Status Effect")]
-    [SerializeField] private StatusEffectDatabase _effectDatabase;
+    [SerializeField] public StatusEffectDatabase _effectDB;
     [SerializeField] private UnitStatusEffects _statusEffects;
+
+    [field: Header("Player Control")]
+    [SerializeField] public bool canAttack = false;//set by player
 
     void Start()
     {
@@ -27,10 +26,6 @@ public class UnitCombat : MonoBehaviour
         _unit.UpdateHealthDisplay(_stats.health.currentValue);
         _unit.UpdateAttackDisplay(_stats.attack.value);
         _unit.UpdateShieldDisplay(_stats.shield.value);
-
-        _statusEffects._effects.Add(_effectDatabase.exhausted,new StatusEffect(_effectDatabase.exhausted, 5));
-        print(_statusEffects._effects[_effectDatabase.exhausted].stack);
-
     }
 
     private void IniStats()
@@ -41,15 +36,29 @@ public class UnitCombat : MonoBehaviour
             _unit.unitData.baseStats.shieldBase);
     }
 
+    public bool IsExhausted()
+    {
+        return _statusEffects.HasEffect(_effectDB.exhausted);
+    }
+
+    public void Exhaust()
+    {
+        _statusEffects.ApplyStatusEffect(new StatusEffect(_effectDB.exhausted));
+    }
+
+    public void Unexhaust()
+    {
+        _statusEffects.RemoveStatusEffect(_effectDB.exhausted);
+    }
+
     private void OnMouseDown()
     {
         if (!canAttack)
             return;
-        if (exhausted)
+        if (IsExhausted())
             return;
 
-        exhausted = true;
-
+        Exhaust();
         Attack();
         TurnManager.Instance.PlayerTakeTurn();
     }

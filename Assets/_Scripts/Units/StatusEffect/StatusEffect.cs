@@ -5,12 +5,17 @@ using UnityEngine;
 [System.Serializable]
 public class StatusEffect
 {
-    public StatusEffectDefinition effectDefinition;
+    public StatusEffectDefinition definition;
     public int stack;
 
-    public StatusEffect(StatusEffectDefinition definition, int stack)
+    public StatusEffect(StatusEffectDefinition definition)
     {
-        this.effectDefinition = definition;
+        this.definition = definition;
+        this.stack = 1;
+    }
+
+    public StatusEffect(StatusEffectDefinition definition, int stack) : this(definition)
+    {
         this.stack = stack;
     }
 }

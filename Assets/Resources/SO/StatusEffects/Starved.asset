@@ -12,3 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 239e5023fdd039e47a717f49b4370ca0, type: 3}
   m_Name: Starved
   m_EditorClassIdentifier: 
+  isStackable: 1

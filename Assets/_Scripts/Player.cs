@@ -98,7 +98,7 @@ public class Player : MonoBehaviour
     {
         foreach (var u in AllOwnUnits())
         {
-            if (u.unitCombat.exhausted == false)
+            if (u.unitCombat.IsExhausted() == false)
                 return false;
         }
 
@@ -109,7 +109,7 @@ public class Player : MonoBehaviour
     {
         foreach (var u in AllOwnUnits())
         {
-            u.unitCombat.exhausted = false;
+            u.unitCombat.Unexhaust();
             u.unitAnimation.PlayUnexhaust();
         }
     }

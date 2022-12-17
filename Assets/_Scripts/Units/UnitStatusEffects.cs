@@ -15,17 +15,59 @@ public class UnitStatusEffects
 
     public void RemoveStatusEffect(StatusEffectDefinition effectDefinition)
     {
-        //if exsited, remove
+        if (HasEffect(effectDefinition))
+        {
+            _effects.Remove(effectDefinition);
+        }
     }
 
-    public void ApplyStatusEffect(StatusEffectDefinition effectDefinition, int stackValue)
+    public void ApplyStatusEffect(StatusEffect effectToApply)
     {
-        //if exsited, stack
-        //else add
+        if (HasEffect(effectToApply.definition))
+        {
+            if (effectToApply.definition.isStackable)
+            {
+                _effects[effectToApply.definition].stack += effectToApply.stack;
+                if (_effects[effectToApply.definition].stack <= 0)
+                {
+                    RemoveStatusEffect(effectToApply.definition);
+                }
+            }
+        }
+        else
+        {
+            if (effectToApply.definition.isStackable)
+            {
+                if (effectToApply.stack > 0)
+                    _effects.Add(effectToApply.definition, new StatusEffect(effectToApply.definition, effectToApply.stack));
+            }
+            else
+            {
+                _effects.Add(effectToApply.definition, new StatusEffect(effectToApply.definition, 1));
+            }
+        }
     }
 
-    public void ChangeEffectStack(StatusEffectDefinition effectDefinition, int stackChangeValue)
+    public int GetStack(StatusEffectDefinition effectDefinition)
     {
-        //if exsited, change stack
+        if (!HasEffect(effectDefinition))
+        {
+            return 0;
+        }
+        else
+        {
+            return _effects[effectDefinition].stack;
+        }
+    }
+
+    public bool HasEffect(StatusEffectDefinition effectDefinition)
+    {
+        if (_effects.ContainsKey(effectDefinition))
+        {
+            if (_effects[effectDefinition].stack > 0)
+                return true;
+        }
+
+        return false;
     }
 }

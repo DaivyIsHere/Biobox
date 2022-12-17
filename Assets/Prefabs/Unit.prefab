@@ -639,7 +639,7 @@ MonoBehaviour:
       _baseValue: 0
   canAttack: 0
   <exhausted>k__BackingField: 0
-  _effectDatabase: {fileID: 11400000, guid: 2de4fd851d423e14db7612fa12343486, type: 2}
+  _effectDB: {fileID: 11400000, guid: 2de4fd851d423e14db7612fa12343486, type: 2}
 --- !u!114 &3510045427282510642
 MonoBehaviour:
   m_ObjectHideFlags: 0
