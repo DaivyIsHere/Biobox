@@ -9,7 +9,8 @@ public class UnitCombat : MonoBehaviour
     [SerializeField] private Unit _unit;
     [SerializeField] private UnitAnimation _unitAnimation;
 
-    [Header("CurrentStats")]
+    [Header("Stats")]
+    [SerializeField] public StatDefinitionDatabase _statDB;
     [SerializeField] private UnitStats _stats;
 
     [Header("Status Effect")]
@@ -24,8 +25,8 @@ public class UnitCombat : MonoBehaviour
         IniStats();
 
         _unit.UpdateHealthDisplay(_stats.health.currentValue);
-        _unit.UpdateAttackDisplay(_stats.attack.value);
-        _unit.UpdateShieldDisplay(_stats.shield.value);
+        _unit.UpdateAttackDisplay(_stats.attack.currentValue);
+        _unit.UpdateShieldDisplay(_stats.shield.currentValue);
     }
 
     private void IniStats()
@@ -33,7 +34,22 @@ public class UnitCombat : MonoBehaviour
         _stats = new UnitStats(
             _unit.unitData.baseStats.attackBase,
             _unit.unitData.baseStats.healthBase,
+            _unit.unitData.baseStats.healthBase,
             _unit.unitData.baseStats.shieldBase);
+    }
+
+    public int GetStatValue(StatDefinition definition)
+    {
+        if(definition == _statDB.attack)
+            return _stats.attack.currentValue;
+        else if(definition == _statDB.health)
+            return _stats.health.currentValue;
+        else if(definition == _statDB.maxHealth)
+            return _stats.maxHealth.currentValue;
+        else if(definition == _statDB.shield)
+            return _stats.shield.currentValue;
+
+        return 0;
     }
 
     public bool IsExhausted()
@@ -73,24 +89,24 @@ public class UnitCombat : MonoBehaviour
         if (HasShield())
         {
             //Damage greater than shield
-            if (damageValue >= _stats.shield.value)
+            if (damageValue >= _stats.shield.currentValue)
             {
-                damageToTake = damageValue - _stats.shield.value;
-                shieldBreakValue = _stats.shield.value;
-                _stats.shield.AddModifier(new StatModifier(-1 * shieldBreakValue, StatModType.Additive));
+                damageToTake = damageValue - _stats.shield.currentValue;
+                shieldBreakValue = _stats.shield.currentValue;
+                _stats.shield.ApplyModifier(new StatModifier(-1 * shieldBreakValue, StatModType.Additive));
                 _stats.health.ApplyModifier(new StatModifier(-1 * damageToTake, StatModType.Additive));
 
-                new CCUnitShieldBreak(_unit.unitCID, shieldBreakValue, _stats.shield.value).AddToQueue();
+                new CCUnitShieldBreak(_unit.unitCID, shieldBreakValue, _stats.shield.currentValue).AddToQueue();
                 if (damageToTake > 0)
                     new CCUnitTakeDamage(_unit.unitCID, damageToTake, _stats.health.currentValue).AddToQueue();
 
             }
-            else if (damageValue < _stats.shield.value)
+            else if (damageValue < _stats.shield.currentValue)
             {
                 shieldBreakValue = Mathf.CeilToInt(damageValue * 0.5f);
-                _stats.shield.AddModifier(new StatModifier(-1 * shieldBreakValue, StatModType.Additive));
+                _stats.shield.ApplyModifier(new StatModifier(-1 * shieldBreakValue, StatModType.Additive));
 
-                new CCUnitShieldBreak(_unit.unitCID, shieldBreakValue, _stats.shield.value).AddToQueue();
+                new CCUnitShieldBreak(_unit.unitCID, shieldBreakValue, _stats.shield.currentValue).AddToQueue();
             }
         }
         else
@@ -120,8 +136,8 @@ public class UnitCombat : MonoBehaviour
         Unit target = BattleManager.Instance.GetFirstTargetByLabel(_unit.unitLabel);
         if (!target)
             return;
-        if (_stats.attack.value > 0)
-            target.unitCombat.TakeDamage(_stats.attack.value);
+        if (_stats.attack.currentValue > 0)
+            target.unitCombat.TakeDamage(_stats.attack.currentValue);
     }
 
     public void Die()
@@ -131,7 +147,7 @@ public class UnitCombat : MonoBehaviour
 
     public bool HasShield()
     {
-        return _stats.shield.value > 0;
+        return _stats.shield.currentValue > 0;
     }
 
     public bool IsDead()

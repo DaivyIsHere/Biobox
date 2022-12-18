@@ -5,9 +5,7 @@ using UnityEngine;
 [System.Serializable]
 public class Condition_Base
 {
-    public int BaseInt;
-    
-    public bool ConditionMet()
+    public virtual bool ConditionMet(Unit unit)
     {
         return true;
     }

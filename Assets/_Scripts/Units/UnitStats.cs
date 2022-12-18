@@ -5,14 +5,17 @@ using UnityEngine;
 [System.Serializable]
 public class UnitStats
 {
-    public Stat attack;
+    public Attribute attack;
     public Attribute health;
-    public Stat shield;
+    public Attribute maxHealth;
+    public Attribute shield;
 
-    public UnitStats(int attackBase, int healthBase, int shieldBase)
+    public UnitStats(int attackBase, int healthBase, int maxHealthBase, int shieldBase)
     {
-        attack = new Stat(Resources.Load<StatDefinition>("SO/StatDefinition/Attack"), attackBase);
-        health = new Attribute(Resources.Load<StatDefinition>("SO/StatDefinition/Health"), healthBase);
-        shield = new Stat(Resources.Load<StatDefinition>("SO/StatDefinition/Shield"), shieldBase);
+        StatDefinitionDatabase database = Resources.Load<StatDefinitionDatabase>("SO/StatDefinition/_StatDefinitionDatabase");
+        attack = new Attribute(database.attack, attackBase);
+        health = new Attribute(database.health, healthBase);
+        maxHealth = new Attribute(database.maxHealth, maxHealthBase);
+        shield = new Attribute(database.shield, shieldBase);
     }
 }

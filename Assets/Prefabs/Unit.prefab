@@ -627,19 +627,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _unit: {fileID: 3324055799317386516}
   _unitAnimation: {fileID: 3510045427282510642}
+  _statDB: {fileID: 11400000, guid: c67fcf91e9eae5b44ba39ae2257a57d4, type: 2}
   _stats:
     attack:
-      statDefinition: {fileID: 11400000, guid: b700ac4ba31292f4cbe658c721743cf6, type: 2}
+      definition: {fileID: 0}
       _baseValue: 0
     health:
-      statDefinition: {fileID: 11400000, guid: a2b62202b3e8a1745ae009f28ea3c9cb, type: 2}
+      definition: {fileID: 0}
+      _baseValue: 0
+    maxHealth:
+      definition: {fileID: 0}
       _baseValue: 0
     shield:
-      statDefinition: {fileID: 11400000, guid: 7b4d0ca39d87dd94cbc53d3f198b19f6, type: 2}
+      definition: {fileID: 0}
       _baseValue: 0
-  canAttack: 0
-  <exhausted>k__BackingField: 0
   _effectDB: {fileID: 11400000, guid: 2de4fd851d423e14db7612fa12343486, type: 2}
+  canAttack: 0
 --- !u!114 &3510045427282510642
 MonoBehaviour:
   m_ObjectHideFlags: 0

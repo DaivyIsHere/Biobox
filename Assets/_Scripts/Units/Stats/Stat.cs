@@ -56,6 +56,7 @@ public class Stat
         this.baseValue = baseValue;
     }
 
+    //Modifer that can be remove
     public virtual void AddModifier(StatModifier mod)
     {
         _isDirty = true;

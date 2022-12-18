@@ -20,7 +20,7 @@ public class BattleManager : Singleton<BattleManager>
         InitializeBattle();    
     }
 
-    public void InitializeBattle()//called from TurnManager
+    public void InitializeBattle()
     {
         SpawnAllBoxes();
         SpawnAllUnitsInBoxes();

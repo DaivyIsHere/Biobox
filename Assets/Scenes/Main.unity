@@ -532,9 +532,11 @@ MonoBehaviour:
   - unitDataList:
     - {fileID: 11400000, guid: c67f140469c5b1b4fa1022a0d1e8939b, type: 2}
     - {fileID: 11400000, guid: c67f140469c5b1b4fa1022a0d1e8939b, type: 2}
+    - {fileID: 11400000, guid: a595043f45c7293448eb528e1b8cf417, type: 2}
   rightBoxesUnits:
   - unitDataList:
     - {fileID: 11400000, guid: d3da1e47c875d1f41ae0b6d513acb2ee, type: 2}
+    - {fileID: 11400000, guid: a595043f45c7293448eb528e1b8cf417, type: 2}
     - {fileID: 11400000, guid: d3da1e47c875d1f41ae0b6d513acb2ee, type: 2}
 --- !u!4 &440379620
 Transform:

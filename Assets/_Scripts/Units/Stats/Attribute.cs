@@ -14,6 +14,7 @@ public class Attribute : Stat
     public event Action<int> onCurrentValueChanged;
     public event Action<StatModifier> appliedModifier;
 
+
     public Attribute(StatDefinition definition) : base(definition)
     {
         ///Note: this will make _isDirty = false when created. So if you're using ScriptableObject to store stats, you'll need to be careful.
@@ -47,8 +48,9 @@ public class Attribute : Stat
                 break;
         }
 
-        ///In our case health can go negetive, change min to 0 for normal cases.
-        newValue = Mathf.Clamp(newValue, -1* _value , _value);
+        ///Edit: don't need to clamp cause we're using _value as default value
+        //In our case health can go negetive, change min to 0 for normal cases.
+        //newValue = Mathf.Clamp(newValue, -1* _value , _value);
 
         if(currentValue != newValue)
         {
@@ -56,6 +58,5 @@ public class Attribute : Stat
             onCurrentValueChanged?.Invoke((int)Math.Round(newValue,4));
             appliedModifier?.Invoke(modifier);
         }
-
     }
 }

@@ -5,7 +5,7 @@ using UnityEditor;
 using System;
 
 [CreateAssetMenu(fileName = "NewPassiveAbility", menuName = "Biobox/Ability/PassiveAbility", order = 1)]
-public class PassiveAbility : Ability
+public class PassiveAbility : ScriptableAbility
 {
     //[Header("Action")]
     [SerializeReference] public Action_Base action = new Action_Base();//new instance otherwise error on editor
@@ -26,7 +26,7 @@ public class PassiveAbility : Ability
     public List<Type> conditionTypeList = new List<Type>
     {
         typeof(Condition_Base),
-        typeof(Condition_TurnEvent)
+        typeof(Condition_SelfStat)
     };
 
     public virtual void InitializeAbiltiy()

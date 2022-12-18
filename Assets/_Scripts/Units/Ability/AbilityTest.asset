@@ -17,18 +17,20 @@ MonoBehaviour:
     rid: 7277847077088133209
   actionTypeIndex: 2
   condition:
-    rid: 7277847077088133194
-  conditionTypeIndex: 0
+    rid: 7277847101975298048
+  conditionTypeIndex: 1
   references:
     version: 2
     RefIds:
-    - rid: 7277847077088133194
-      type: {class: Condition_Base, ns: , asm: Assembly-CSharp}
-      data:
-        BaseInt: 0
     - rid: 7277847077088133209
       type: {class: Action_StatusEffect, ns: , asm: Assembly-CSharp}
       data:
         statusEffect:
           definition: {fileID: 0}
           stack: 0
+    - rid: 7277847101975298048
+      type: {class: Condition_SelfStat, ns: , asm: Assembly-CSharp}
+      data:
+        statDefinition: {fileID: 11400000, guid: a2b62202b3e8a1745ae009f28ea3c9cb, type: 2}
+        comparison: 0
+        compareValue: 1
