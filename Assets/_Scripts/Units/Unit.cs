@@ -7,7 +7,7 @@ public class Unit : MonoBehaviour
 {
     [field: Header("Component")]
     [field: SerializeField] public UnitAnimation unitAnimation { get; private set; }
-    [field: SerializeField] public UnitCombat unitCombat { get; private set; }
+    [field: SerializeField] public UnitBattle unitBattle { get; private set; }
 
     [Header("Info")]
     public ScriptableUnitData unitData;
@@ -29,6 +29,11 @@ public class Unit : MonoBehaviour
     }
 
     #endregion
+
+    public void IniUnit()
+    {
+        unitBattle.IniUnitBattle();
+    }
 
     private void IniUnitDisplay()
     {
@@ -93,7 +98,7 @@ public struct UnitLabel
 [System.Serializable]
 public struct UnitCID
 {
-    public int id;
+    public int id; // use -1 as null unit
 
     public UnitCID(int id)
     {

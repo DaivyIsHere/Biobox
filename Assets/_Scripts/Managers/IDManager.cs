@@ -17,6 +17,9 @@ public class IDManager : Singleton<IDManager>
 
     public Unit GetUnitWithID(UnitCID unitCID)
     {
+        if(unitCID.id == -1)
+            return null;
+            
         Unit result = null;
         _unitCIDHolders.TryGetValue(unitCID.id, out result);
         return result;

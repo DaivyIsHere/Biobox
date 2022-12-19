@@ -15,9 +15,9 @@ public class BattleManager : Singleton<BattleManager>
     [SerializeField] private GameObject _boxPref;
     [SerializeField] private GameObject _unitPref;
 
-    void Start() 
+    void Start()
     {
-        InitializeBattle();    
+        InitializeBattle();
     }
 
     public void InitializeBattle()
@@ -67,6 +67,7 @@ public class BattleManager : Singleton<BattleManager>
                 newUnit.unitLabel = new UnitLabel(box.boxLabel, i);
                 newUnit.gameObject.name = newUnit.unitData.unitName + "_" + i;
                 IDManager.Instance.RegisterNewUnitCID(newUnit);
+                newUnit.IniUnit();
                 box.unitList.Add(newUnit);
             }
         }
@@ -82,6 +83,7 @@ public class BattleManager : Singleton<BattleManager>
                 newUnit.unitLabel = new UnitLabel(box.boxLabel, i);
                 newUnit.gameObject.name = newUnit.unitData.unitName + "_" + i;
                 IDManager.Instance.RegisterNewUnitCID(newUnit);
+                newUnit.IniUnit();
                 box.unitList.Add(newUnit);
             }
         }
@@ -186,4 +188,27 @@ public class BattleManager : Singleton<BattleManager>
         //AlignAllUnits(unit.unitLabel.boxSide);//Align will set label and create a AlignCommand
     }
 
+    public UnitCID GetRelativeUnit(UnitCID selfCID, TargetRelative_Position relativePosition)
+    {
+        Unit selfUnit = selfCID.GetUnit();
+        BoxLabel selfBox = selfUnit.unitLabel.boxLabel;
+        List<Unit> unitsInBox = selfBox.GetBox().unitList;
+        switch (relativePosition)
+        {
+            case TargetRelative_Position.Self:
+                return selfCID;
+            case TargetRelative_Position.Front:
+                if(selfUnit.unitLabel.orderInBox + 1 >= unitsInBox.Count)
+                    return new UnitCID(-1);//null unit
+                else
+                    return unitsInBox[selfUnit.unitLabel.orderInBox - 1].unitCID;
+            case TargetRelative_Position.Behind:
+                if(selfUnit.unitLabel.orderInBox <= 0)
+                    return new UnitCID(-1);//null unit
+                else
+                    return unitsInBox[selfUnit.unitLabel.orderInBox + 1].unitCID;
+        }
+
+        return new UnitCID(-1);
+    }
 }

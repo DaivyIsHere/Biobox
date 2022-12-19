@@ -1,9 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 [RequireComponent(typeof(Unit))]
-public class UnitCombat : MonoBehaviour
+public class UnitBattle : MonoBehaviour
 {
     [Header("Component")]
     [SerializeField] private Unit _unit;
@@ -17,16 +18,32 @@ public class UnitCombat : MonoBehaviour
     [SerializeField] public StatusEffectDatabase _effectDB;
     [SerializeField] private UnitStatusEffects _statusEffects;
 
+    [Header("Ability")]
+    [SerializeField] public PassiveAbility passiveAbility;
+
+    public event Action<Unit> OnUnit_BattleStart;
+    public event Action<Unit> OnUnit_SelfTurnStart;
+    public event Action<Unit> OnUnit_SelfTurnEnd;
+    public event Action<Unit> OnUnit_OppoTurnStart;
+    public event Action<Unit> OnUnit_OppoTurnEnd;
+
     [field: Header("Player Control")]
     [SerializeField] public bool canAttack = false;//set by player
 
-    void Start()
+    //Called by Unit.cs
+    public void IniUnitBattle()
     {
         IniStats();
+        IniAbility();
 
         _unit.UpdateHealthDisplay(_stats.health.currentValue);
         _unit.UpdateAttackDisplay(_stats.attack.currentValue);
         _unit.UpdateShieldDisplay(_stats.shield.currentValue);
+    }
+
+    public void AbilityTest()
+    {
+        OnUnit_SelfTurnEnd?.Invoke(this._unit);
     }
 
     private void IniStats()
@@ -38,15 +55,25 @@ public class UnitCombat : MonoBehaviour
             _unit.unitData.baseStats.shieldBase);
     }
 
+    private void IniAbility()
+    {
+        passiveAbility = _unit.unitData.passiveAbility;
+
+        if (passiveAbility)
+        {
+            passiveAbility.InitializeAbiltiy(_unit);
+        }
+    }
+
     public int GetStatValue(StatDefinition definition)
     {
-        if(definition == _statDB.attack)
+        if (definition == _statDB.attack)
             return _stats.attack.currentValue;
-        else if(definition == _statDB.health)
+        else if (definition == _statDB.health)
             return _stats.health.currentValue;
-        else if(definition == _statDB.maxHealth)
+        else if (definition == _statDB.maxHealth)
             return _stats.maxHealth.currentValue;
-        else if(definition == _statDB.shield)
+        else if (definition == _statDB.shield)
             return _stats.shield.currentValue;
 
         return 0;
@@ -83,7 +110,7 @@ public class UnitCombat : MonoBehaviour
     {
         if (damageValue <= 0)
             return;
-        
+
         int damageToTake = 0;
         int shieldBreakValue = 0;
         if (HasShield())
@@ -116,7 +143,7 @@ public class UnitCombat : MonoBehaviour
 
             new CCUnitTakeDamage(_unit.unitCID, damageToTake, _stats.health.currentValue).AddToQueue();
         }
-        
+
         //dead or not
         if (!IsDead())
         {
@@ -137,7 +164,7 @@ public class UnitCombat : MonoBehaviour
         if (!target)
             return;
         if (_stats.attack.currentValue > 0)
-            target.unitCombat.TakeDamage(_stats.attack.currentValue);
+            target.unitBattle.TakeDamage(_stats.attack.currentValue);
     }
 
     public void Die()
@@ -154,4 +181,13 @@ public class UnitCombat : MonoBehaviour
     {
         return _stats.health.currentValue <= 0;
     }
+
+
+    //Event
+    public void OnBattleStart() => OnUnit_BattleStart?.Invoke(_unit);
+    public void OnSelfTurnStart() => OnUnit_SelfTurnStart?.Invoke(_unit);
+    public void OnSelfTurnEnd() => OnUnit_SelfTurnEnd?.Invoke(_unit);
+    public void OnOppoTurnStart() => OnUnit_OppoTurnStart?.Invoke(_unit);
+    public void OnOppoTurnEnd() => OnUnit_OppoTurnEnd?.Invoke(_unit);
+
 }

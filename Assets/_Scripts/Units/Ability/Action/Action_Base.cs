@@ -7,6 +7,6 @@ public class Action_Base
 {
     public virtual void DoAction()
     {
-        Debug.Log("This is Base");
+        Debug.Log("This is Base Action");
     }
 }

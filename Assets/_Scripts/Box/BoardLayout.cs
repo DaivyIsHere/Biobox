@@ -38,7 +38,7 @@ public class BoardLayout : MonoBehaviour
 
     public void ShowIndicator(BoxSide side)
     {
-        if (side == BoxSide.LeftSide)
+        if (side == BoxSide.RightSide)
             _indicatorTransform.DOMoveX(_indicatorPosX_left, 0.5f).SetEase(Ease.InOutSine);
         else
             _indicatorTransform.DOMoveX(_indicatorPosX_right, 0.5f).SetEase(Ease.InOutSine);

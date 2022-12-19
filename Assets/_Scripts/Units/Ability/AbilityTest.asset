@@ -13,24 +13,44 @@ MonoBehaviour:
   m_Name: AbilityTest
   m_EditorClassIdentifier: 
   info: 
-  action:
-    rid: 7277847077088133209
-  actionTypeIndex: 2
-  condition:
-    rid: 7277847101975298048
-  conditionTypeIndex: 1
+  showTrigger: 1
+  showCondition: 1
+  showAction: 0
+  showTarget: 0
+  showLimit: 0
+  triggerTypeIndex: 1
+  conditionTypeIndex: 0
+  actionTypeIndex: 1
+  targetTypeIndex: 1
+  trigger:
+    rid: 7277847122763317265
+  conditions:
+  - rid: 7277847122763317274
+  actions: []
+  target:
+    rid: 7277847122763317264
+  limit:
+    rid: 7277847122763317248
   references:
     version: 2
     RefIds:
-    - rid: 7277847077088133209
-      type: {class: Action_StatusEffect, ns: , asm: Assembly-CSharp}
+    - rid: 7277847122763317248
+      type: {class: Limit_Base, ns: , asm: Assembly-CSharp}
       data:
-        statusEffect:
-          definition: {fileID: 0}
-          stack: 0
-    - rid: 7277847101975298048
+        times: -1
+        per: 1
+    - rid: 7277847122763317264
+      type: {class: Target_Relative, ns: , asm: Assembly-CSharp}
+      data:
+        relativePosition: 0
+    - rid: 7277847122763317265
+      type: {class: Trigger_BattleEvent, ns: , asm: Assembly-CSharp}
+      data:
+        when: 1
+        startEnd: 0
+    - rid: 7277847122763317274
       type: {class: Condition_SelfStat, ns: , asm: Assembly-CSharp}
       data:
         statDefinition: {fileID: 11400000, guid: a2b62202b3e8a1745ae009f28ea3c9cb, type: 2}
-        comparison: 0
+        comparison: 3
         compareValue: 1

@@ -30,20 +30,20 @@ public class TurnManager : Singleton<TurnManager>
         switch (newState)
         {
             case TurnState.BattleStart:
-                HandleBattleStart();
                 OnBattleStart?.Invoke();
+                HandleBattleStart();
                 break;
             case TurnState.TurnStart:
-                HandleTurnStart();
                 OnTurnStart?.Invoke(currentSide);
+                HandleTurnStart();
                 break;
             case TurnState.WaitForCurrentPlayer:
-                HandleWaitForCurrentPlayer();
                 OnWaitForPlayerTakeTurn?.Invoke(currentSide);
+                HandleWaitForCurrentPlayer();
                 break;
             case TurnState.TurnEnd:
-                HandleTurnEnd();
                 OnTurnEnd?.Invoke(currentSide);
+                HandleTurnEnd();
                 break;
         }
 

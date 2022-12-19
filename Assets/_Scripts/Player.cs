@@ -14,6 +14,7 @@ public class Player : MonoBehaviour
         TurnManager.OnTurnStart += OnTurnStart;
         TurnManager.OnWaitForPlayerTakeTurn += OnWaitForPlayerTakeTurn;
         TurnManager.OnPlayerTakeTurn += OnPlayerTakeTurn;
+        TurnManager.OnTurnEnd += OnTurnEnd;
         TurnManager.OnTurnStateChanged += OnTurnStateChanged;
     }
 
@@ -23,6 +24,7 @@ public class Player : MonoBehaviour
         TurnManager.OnTurnStart -= OnTurnStart;
         TurnManager.OnWaitForPlayerTakeTurn -= OnWaitForPlayerTakeTurn;
         TurnManager.OnPlayerTakeTurn -= OnPlayerTakeTurn;
+        TurnManager.OnTurnEnd -= OnTurnEnd;
         TurnManager.OnTurnStateChanged -= OnTurnStateChanged;
     }
 
@@ -35,6 +37,27 @@ public class Player : MonoBehaviour
     {
         AllOwnBoxes();
         AllOwnUnits();
+
+        //UnitTrigger
+        foreach (var u in _allOwnUnits)
+            u.unitBattle.OnBattleStart();
+    }
+
+    private void OnTurnEnd(BoxSide currentSide)
+    {
+        if (currentSide == playerSide)
+        {
+            
+            //UnitTrigger
+            foreach (var u in _allOwnUnits)
+                u.unitBattle.OnSelfTurnEnd();
+        }
+        else
+        {
+            //UnitTrigger
+            foreach (var u in _allOwnUnits)
+                u.unitBattle.OnOppoTurnEnd();
+        }
     }
 
     private void OnTurnStart(BoxSide currentSide)
@@ -43,6 +66,16 @@ public class Player : MonoBehaviour
         {
             if (IsAllUnitExhauseted())
                 UnexhaustAllUnits();
+
+            //UnitTrigger
+            foreach (var u in _allOwnUnits)
+                u.unitBattle.OnSelfTurnStart();
+        }
+        else
+        {
+            //UnitTrigger
+            foreach (var u in _allOwnUnits)
+                u.unitBattle.OnOppoTurnStart();
         }
     }
 
@@ -66,7 +99,7 @@ public class Player : MonoBehaviour
 
     private void OnTurnStateChanged(TurnState newState)
     {
-        
+
     }
 
     public List<Unit> AllOwnUnits()
@@ -98,7 +131,7 @@ public class Player : MonoBehaviour
     {
         foreach (var u in AllOwnUnits())
         {
-            if (u.unitCombat.IsExhausted() == false)
+            if (u.unitBattle.IsExhausted() == false)
                 return false;
         }
 
@@ -109,7 +142,7 @@ public class Player : MonoBehaviour
     {
         foreach (var u in AllOwnUnits())
         {
-            u.unitCombat.Unexhaust();
+            u.unitBattle.Unexhaust();
             u.unitAnimation.PlayUnexhaust();
         }
     }
@@ -118,7 +151,7 @@ public class Player : MonoBehaviour
     {
         foreach (var u in AllOwnUnits())
         {
-            u.unitCombat.canAttack = true;
+            u.unitBattle.canAttack = true;
         }
     }
 
@@ -126,17 +159,17 @@ public class Player : MonoBehaviour
     {
         foreach (var u in AllOwnUnits())
         {
-            u.unitCombat.canAttack = false;
+            u.unitBattle.canAttack = false;
         }
     }
 
     private void TurnAvaliableVisual()
     {
-        
+
     }
 
     private void TurnUnavaliableVisual()
     {
-        
+
     }
 }

@@ -20,3 +20,4 @@ MonoBehaviour:
     attackBase: 2
     healthBase: 2
     shieldBase: 0
+  passiveAbility: {fileID: 11400000, guid: 45d80da3e4487434c9b406be6cdb01e3, type: 2}

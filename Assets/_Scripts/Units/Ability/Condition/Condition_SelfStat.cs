@@ -11,22 +11,29 @@ public class Condition_SelfStat : Condition_Base
 
     public override bool ConditionMet(Unit unit)
     {
-        int unitStatValue = unit.unitCombat.GetStatValue(statDefinition);
+        bool result = true;
+        int unitStatValue = unit.unitBattle.GetStatValue(statDefinition);
         switch (comparison)
         {
             case ConditionStats_Comparison.Greater:
-                return unitStatValue > compareValue;
+                result = unitStatValue > compareValue;
+                break;
             case ConditionStats_Comparison.Equal:
-                return unitStatValue == compareValue;
+                result = unitStatValue == compareValue;
+                break;
             case ConditionStats_Comparison.Less:
-                return unitStatValue < compareValue;
+                result = unitStatValue < compareValue;
+                break;
             case ConditionStats_Comparison.EqualOrGreater:
-                return unitStatValue >= compareValue;
+                result = unitStatValue >= compareValue;
+                break;
             case ConditionStats_Comparison.EqualOrLess:
-                return unitStatValue <= compareValue;
+                result = unitStatValue <= compareValue;
+                break;
         }
 
-        return true;
+        Debug.Log("<Condition> SelfStat of " + statDefinition.name + " is " + comparison.ToString() + " than " + compareValue + " , result : "+ result);
+        return result;
     }
 }
 

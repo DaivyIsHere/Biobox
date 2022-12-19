@@ -17,6 +17,9 @@ public class ScriptableUnitData : ScriptableObject
     [Header("Unit BaseStats")]
     public UnitBaseStats baseStats;
 
+    [Header("Unit Ability")]
+    public PassiveAbility passiveAbility;
+
     private void OnValidate()
     {
         // Get a unique identifier from the asset's unique 'Asset Path' (ex : Resources/UniData/Plunny.asset)

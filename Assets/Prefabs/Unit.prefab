@@ -599,7 +599,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <unitAnimation>k__BackingField: {fileID: 3510045427282510642}
-  <unitCombat>k__BackingField: {fileID: 3574618926649868495}
+  <unitBattle>k__BackingField: {fileID: 3574618926649868495}
   unitData: {fileID: 0}
   unitLabel:
     boxLabel:
@@ -642,6 +642,7 @@ MonoBehaviour:
       definition: {fileID: 0}
       _baseValue: 0
   _effectDB: {fileID: 11400000, guid: 2de4fd851d423e14db7612fa12343486, type: 2}
+  passiveAbility: {fileID: 0}
   canAttack: 0
 --- !u!114 &3510045427282510642
 MonoBehaviour:

@@ -8,7 +8,7 @@ public class StatModifier
 {
     public float value;
     public StatModType type;
-    public int order;
+    [HideInInspector] public int order;
     public object source;
 
     public StatModifier(float value, StatModType type, int order, object source)
