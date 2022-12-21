@@ -64,9 +64,6 @@ public class Player : MonoBehaviour
     {
         if (currentSide == playerSide)
         {
-            if (IsAllUnitExhauseted())
-                UnexhaustAllUnits();
-
             //UnitTrigger
             foreach (var u in _allOwnUnits)
                 u.unitBattle.OnSelfTurnStart();
@@ -83,6 +80,9 @@ public class Player : MonoBehaviour
     {
         if (currentSide == playerSide)
         {
+            if (IsAllUnitExhauseted())
+                UnexhaustAllUnits();
+
             TurnAvaliableVisual();
             EnableAllUnitsAttack();
         }
@@ -97,7 +97,7 @@ public class Player : MonoBehaviour
         }
     }
 
-    private void OnTurnStateChanged(TurnState newState)
+    private void OnTurnStateChanged(TurnState newState, BoxSide side)
     {
 
     }

@@ -32,7 +32,7 @@ public class Condition_SelfStat : Condition_Base
                 break;
         }
 
-        Debug.Log("<Condition> SelfStat of " + statDefinition.name + " is " + comparison.ToString() + " than " + compareValue + " , result : "+ result);
+       Debug.Log("<Condition> SelfStat of " + statDefinition.name + " is " + comparison.ToString() + " than " + compareValue + " , result : "+ result);
         return result;
     }
 }

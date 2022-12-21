@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using DG.Tweening;
+using TMPro;
 
 //A script to get info about all the layout position
 public class BoardLayout : MonoBehaviour
@@ -26,14 +28,21 @@ public class BoardLayout : MonoBehaviour
     [SerializeField] private float _indicatorPosX_left;
     [SerializeField] private float _indicatorPosX_right;
 
-    void Awake() 
+    [Header("Turn Messege")]
+    [SerializeField] private Transform TurnMessageDisplay;
+    [SerializeField] private Image TurnMessageBG;
+    [SerializeField] private TextMeshProUGUI TurnMessageText;
+
+    void Awake()
     {
-        TurnManager.OnTurnEnd += ShowIndicator;
+        //TurnManager.OnTurnEnd += ShowIndicator;
+        TurnManager.OnTurnStateChanged += ShowTurnMessage;
     }
 
     void OnDestroy()
     {
-        TurnManager.OnTurnEnd -= ShowIndicator;
+        //TurnManager.OnTurnEnd -= ShowIndicator;
+        TurnManager.OnTurnStateChanged -= ShowTurnMessage;
     }
 
     public void ShowIndicator(BoxSide side)
@@ -67,6 +76,39 @@ public class BoardLayout : MonoBehaviour
             result.x = rightFirstUnitPositionX + order * (_unitSpacing + _unitWidth);
 
         return result;
+    }
+
+    public void ShowTurnMessage(TurnState turnState, BoxSide side)
+    {
+        switch (turnState)
+        {
+            case TurnState.BattleStart:
+                PlayTurnMessage("Battle Start");
+                break;
+            case TurnState.TurnStart:
+                PlayTurnMessage("Turn Start");
+                break;
+            case TurnState.WaitForCurrentPlayer:
+                if (side == BoxSide.LeftSide)
+                    PlayTurnMessage("[ Your Turn ]");
+                else
+                    PlayTurnMessage("[ Enemy Turn ]");
+                break;
+            case TurnState.TurnEnd:
+                PlayTurnMessage("Turn End");
+                break;
+        }
+    }
+
+    public void PlayTurnMessage(string message)
+    {
+        TurnMessageText.text = message;
+        TurnMessageText.DOFade(0f, 0f);
+        TurnMessageBG.DOFade(0, 0f);
+        TurnMessageDisplay.localScale = Vector3.one * 1.2f;
+        TurnMessageDisplay.DOScale(Vector3.one, 0.5f).SetEase(Ease.InOutSine);
+        TurnMessageBG.DOFade(0.05f, 0.5f).SetEase(Ease.InOutSine);
+        TurnMessageText.DOFade(1, 0.5f).SetEase(Ease.InOutSine);
     }
 
 }

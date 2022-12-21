@@ -16,15 +16,23 @@ public class TurnManager : Singleton<TurnManager>
     public static event Action<BoxSide> OnWaitForPlayerTakeTurn;
     public static event Action<BoxSide> OnPlayerTakeTurn;
     public static event Action<BoxSide> OnTurnEnd;
-    public static event Action<TurnState> OnTurnStateChanged;
+    public static event Action<TurnState, BoxSide> OnTurnStateChanged;
 
     public void StartTurnManaging()//called by battleManager
     {
-        UpdateTurnState(TurnState.BattleStart);
+        UpdateTurnState(TurnState.BattleStart,0);
     }
 
-    private void UpdateTurnState(TurnState newState)
+    public void UpdateTurnState(TurnState newState,float PendingTime)
     {
+        StartCoroutine(PendingUpdateTurnState(newState, PendingTime));
+    }
+
+    private IEnumerator PendingUpdateTurnState(TurnState newState, float PendingTime)
+    {
+        yield return new WaitForSeconds(PendingTime);
+        //print("Update to State : "+ newState.ToString());
+
         currentTurnState = newState;
 
         switch (newState)
@@ -47,7 +55,7 @@ public class TurnManager : Singleton<TurnManager>
                 break;
         }
 
-        OnTurnStateChanged?.Invoke(newState);
+        OnTurnStateChanged?.Invoke(newState, currentSide);
     }
 
     public void PlayerTakeTurn()//called by UnitCombat.cs after attack
@@ -67,18 +75,18 @@ public class TurnManager : Singleton<TurnManager>
             }
             yield return 0;
         }
-        UpdateTurnState(nextState);
+        UpdateTurnState(nextState,1f);
     }
 
     private void HandleBattleStart()
     {
         turnCount = 1;
-        UpdateTurnState(TurnState.TurnStart);
+        UpdateTurnState(TurnState.TurnStart, 1f);
     }
 
     private void HandleTurnStart()
     {
-        UpdateTurnState(TurnState.WaitForCurrentPlayer);
+        UpdateTurnState(TurnState.WaitForCurrentPlayer,1f);
     }
 
     private void HandleWaitForCurrentPlayer()
@@ -90,7 +98,7 @@ public class TurnManager : Singleton<TurnManager>
     {
         currentSide = currentSide.Opposite();
         turnCount += 1;
-        UpdateTurnState(TurnState.TurnStart);
+        UpdateTurnState(TurnState.TurnStart,1f);
     }
 
     public bool IsCurrentSide(BoxSide boxSide)
