@@ -113,30 +113,25 @@ public class BattleManager : Singleton<BattleManager>
         }
     }
 
-    public IEnumerator AlignAllUnitsCommand(BoxSide side)//should only be called from CCAlignUnits
+    public IEnumerator AlignAllUnitsCommand()//should only be called from CCAlignUnits
     {
         float alignDuration = 0.5f;
 
-        if (side == BoxSide.LeftSide)
+        foreach (var box in leftBoxes)
         {
-            foreach (var box in leftBoxes)
+            for (int i = 0; i < box.unitList.Count; i++)
             {
-                for (int i = 0; i < box.unitList.Count; i++)
-                {
-                    box.unitList[i].unitAnimation.PlayAlign(_boardLayout.GetUnitBoardPosition(BoxSide.LeftSide, i), alignDuration);
-                }
+                box.unitList[i].unitAnimation.PlayAlign(_boardLayout.GetUnitBoardPosition(BoxSide.LeftSide, i), alignDuration);
             }
         }
-        else if (side == BoxSide.RightSide)
+        foreach (var box in rightBoxes)
         {
-            foreach (var box in rightBoxes)
+            for (int i = 0; i < box.unitList.Count; i++)
             {
-                for (int i = 0; i < box.unitList.Count; i++)
-                {
-                    box.unitList[i].unitAnimation.PlayAlign(_boardLayout.GetUnitBoardPosition(BoxSide.RightSide, i), alignDuration);
-                }
+                box.unitList[i].unitAnimation.PlayAlign(_boardLayout.GetUnitBoardPosition(BoxSide.RightSide, i), alignDuration);
             }
         }
+
         yield return new WaitForSeconds(alignDuration);
         CCommand.CommandExecutionComplete();
     }
@@ -182,7 +177,7 @@ public class BattleManager : Singleton<BattleManager>
     {
         unit.unitLabel.GetBox().unitList.Remove(unit);
         UpdateUnitLabels(unit.unitLabel.boxSide);
-        new CCAlignUnits(unit.unitLabel.boxSide).AddToQueue();
+        //new CCAlignUnits(unit.unitLabel.boxSide).AddToQueue();
         //Destroy(unit.gameObject);
 
         //AlignAllUnits(unit.unitLabel.boxSide);//Align will set label and create a AlignCommand
@@ -197,16 +192,16 @@ public class BattleManager : Singleton<BattleManager>
         {
             case TargetRelative_Position.Self:
                 return selfCID;
-            case TargetRelative_Position.Front:
-                if(selfUnit.unitLabel.orderInBox + 1 >= unitsInBox.Count)
-                    return new UnitCID(-1);//null unit
-                else
-                    return unitsInBox[selfUnit.unitLabel.orderInBox - 1].unitCID;
             case TargetRelative_Position.Behind:
-                if(selfUnit.unitLabel.orderInBox <= 0)
+                if (selfUnit.unitLabel.orderInBox + 1 >= unitsInBox.Count)
                     return new UnitCID(-1);//null unit
                 else
                     return unitsInBox[selfUnit.unitLabel.orderInBox + 1].unitCID;
+            case TargetRelative_Position.Front:
+                if (selfUnit.unitLabel.orderInBox <= 0)
+                    return new UnitCID(-1);//null unit
+                else
+                    return unitsInBox[selfUnit.unitLabel.orderInBox - 1].unitCID;
         }
 
         return new UnitCID(-1);

@@ -116,4 +116,32 @@ public class UnitAnimation : MonoBehaviour
     {
         _unitBG.DOColor(defaultColor, 0.5f);
     }
+
+    public void PlayAttackChange(int changeValue, int valueAfter)
+    {
+        _unit.attackDisplay.transform.DOPunchPosition(new Vector3(0, 0.3f, 0), 0.2f, 10, 0.5f).OnComplete(() =>
+            CCommand.CommandExecutionComplete());
+        _unit.UpdateAttackDisplay(valueAfter);
+    }
+
+    public void PlayHealthChange(int changeValue, int valueAfter)
+    {
+        _unit.healthDisplay.transform.DOPunchPosition(new Vector3(0, 0.3f, 0), 0.2f, 10, 0.5f).OnComplete(() =>
+            CCommand.CommandExecutionComplete());
+        _unit.UpdateHealthDisplay(valueAfter);
+    }
+
+    public void PlayStartAbility()
+    {
+        float originalY = _startLocalPos.y;
+        _unitSprite.DOLocalMoveY(originalY+0.2f, 0.2f).SetEase(Ease.InOutSine).OnComplete(() =>
+            CCommand.CommandExecutionComplete());
+    }
+
+    public void PlayEndAbility()
+    {
+        float originalY = _startLocalPos.y;
+        _unitSprite.DOLocalMoveY(originalY, 0.2f).SetEase(Ease.InOutSine).OnComplete(() =>
+            CCommand.CommandExecutionComplete());
+    }
 }

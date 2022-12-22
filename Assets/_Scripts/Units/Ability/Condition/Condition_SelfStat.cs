@@ -6,7 +6,7 @@ using UnityEngine;
 public class Condition_SelfStat : Condition_Base
 {
     public StatDefinition statDefinition;
-    public ConditionStats_Comparison comparison;
+    public Condition_Comparison comparison;
     public int compareValue;
 
     public override bool ConditionMet(Unit unit)
@@ -15,19 +15,19 @@ public class Condition_SelfStat : Condition_Base
         int unitStatValue = unit.unitBattle.GetStatValue(statDefinition);
         switch (comparison)
         {
-            case ConditionStats_Comparison.Greater:
+            case Condition_Comparison.Greater:
                 result = unitStatValue > compareValue;
                 break;
-            case ConditionStats_Comparison.Equal:
+            case Condition_Comparison.Equal:
                 result = unitStatValue == compareValue;
                 break;
-            case ConditionStats_Comparison.Less:
+            case Condition_Comparison.Less:
                 result = unitStatValue < compareValue;
                 break;
-            case ConditionStats_Comparison.EqualOrGreater:
+            case Condition_Comparison.EqualOrGreater:
                 result = unitStatValue >= compareValue;
                 break;
-            case ConditionStats_Comparison.EqualOrLess:
+            case Condition_Comparison.EqualOrLess:
                 result = unitStatValue <= compareValue;
                 break;
         }
@@ -37,11 +37,11 @@ public class Condition_SelfStat : Condition_Base
     }
 }
 
-public enum ConditionStats_Comparison
-{
-    Greater,
-    Equal,
-    Less,
-    EqualOrGreater,
-    EqualOrLess
-}
+// public enum ConditionStats_Comparison
+// {
+//     Greater,
+//     Equal,
+//     Less,
+//     EqualOrGreater,
+//     EqualOrLess
+// }

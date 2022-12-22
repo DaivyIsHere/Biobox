@@ -32,6 +32,8 @@ public class BoardLayout : MonoBehaviour
     [SerializeField] private Transform TurnMessageDisplay;
     [SerializeField] private Image TurnMessageBG;
     [SerializeField] private TextMeshProUGUI TurnMessageText;
+    [SerializeField] private Color TurnEventColor;
+    [SerializeField] private Color PlayerControlColor;
 
     void Awake()
     {
@@ -83,32 +85,34 @@ public class BoardLayout : MonoBehaviour
         switch (turnState)
         {
             case TurnState.BattleStart:
-                PlayTurnMessage("Battle Start");
+                PlayTurnMessage("Battle Start", TurnEventColor);
                 break;
             case TurnState.TurnStart:
-                PlayTurnMessage("Turn Start");
+                PlayTurnMessage("Turn Start", TurnEventColor);
                 break;
             case TurnState.WaitForCurrentPlayer:
                 if (side == BoxSide.LeftSide)
-                    PlayTurnMessage("[ Your Turn ]");
+                    PlayTurnMessage("[ Your Turn ]", PlayerControlColor);
                 else
-                    PlayTurnMessage("[ Enemy Turn ]");
+                    PlayTurnMessage("[ Enemy Turn ]", PlayerControlColor);
                 break;
             case TurnState.TurnEnd:
-                PlayTurnMessage("Turn End");
+                PlayTurnMessage("Turn End", TurnEventColor);
                 break;
         }
     }
 
-    public void PlayTurnMessage(string message)
+    public void PlayTurnMessage(string message, Color color)
     {
+        Sequence sequence = DOTween.Sequence();
+        sequence.Append(TurnMessageText.DOFade(0f, 0.1f));
+        sequence.Join(TurnMessageBG.DOFade(0, 0.1f));
         TurnMessageText.text = message;
-        TurnMessageText.DOFade(0f, 0f);
-        TurnMessageBG.DOFade(0, 0f);
-        TurnMessageDisplay.localScale = Vector3.one * 1.2f;
-        TurnMessageDisplay.DOScale(Vector3.one, 0.5f).SetEase(Ease.InOutSine);
-        TurnMessageBG.DOFade(0.05f, 0.5f).SetEase(Ease.InOutSine);
-        TurnMessageText.DOFade(1, 0.5f).SetEase(Ease.InOutSine);
+        TurnMessageText.color = color;
+        TurnMessageDisplay.localScale = Vector3.one * 1.05f;
+        sequence.Append(TurnMessageDisplay.DOScale(Vector3.one, 0.5f).SetEase(Ease.InOutSine));
+        sequence.Join(TurnMessageBG.DOFade(0.05f, 0.5f).SetEase(Ease.InOutSine));
+        sequence.Join(TurnMessageText.DOFade(1, 0.5f).SetEase(Ease.InOutSine));
     }
 
 }

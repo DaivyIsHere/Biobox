@@ -7,8 +7,8 @@ using System;
 [System.Serializable]
 public class Attribute : Stat
 {
-    [Header("Current Value")]
-    protected int _currentValue;
+    //[Header("Current Value")]
+    [SerializeField] protected int _currentValue;
     public int currentValue => _currentValue;
 
     public event Action<int> onCurrentValueChanged;
@@ -59,4 +59,35 @@ public class Attribute : Stat
             appliedModifier?.Invoke(modifier);
         }
     }
+
+    public virtual void ApplyModifier(StatModifier modifier, float minValue, float maxValue)
+    {
+        float newValue = _currentValue;
+        switch (modifier.type)
+        {
+            case StatModType.Additive:
+                newValue += modifier.value;
+                break;
+            case StatModType.PercentAdd://same as percentMult since it's a one time mult
+                newValue *= modifier.value;
+                break;
+            case StatModType.PercentMult:
+                newValue *= modifier.value;
+                break;
+            case StatModType.Override:
+                newValue = modifier.value;
+                break;
+        }
+
+        //Clamp
+        newValue = Mathf.Clamp(newValue, minValue ,maxValue);
+
+        if(currentValue != newValue)
+        {
+            _currentValue = (int)Math.Round(newValue,4);
+            onCurrentValueChanged?.Invoke((int)Math.Round(newValue,4));
+            appliedModifier?.Invoke(modifier);
+        }
+    }
+
 }

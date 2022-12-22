@@ -254,6 +254,8 @@ MonoBehaviour:
   TurnMessageDisplay: {fileID: 812148795}
   TurnMessageBG: {fileID: 962685641}
   TurnMessageText: {fileID: 2108810341}
+  TurnEventColor: {r: 0.26666668, g: 0.3764706, b: 0.59607846, a: 0}
+  PlayerControlColor: {r: 0.59607846, g: 0.26666668, b: 0.26666668, a: 0}
 --- !u!1 &183348855
 GameObject:
   m_ObjectHideFlags: 0
@@ -565,7 +567,7 @@ MonoBehaviour:
   leftBoxesUnits:
   - unitDataList:
     - {fileID: 11400000, guid: c67f140469c5b1b4fa1022a0d1e8939b, type: 2}
-    - {fileID: 11400000, guid: c67f140469c5b1b4fa1022a0d1e8939b, type: 2}
+    - {fileID: 11400000, guid: a595043f45c7293448eb528e1b8cf417, type: 2}
   rightBoxesUnits:
   - unitDataList:
     - {fileID: 11400000, guid: d3da1e47c875d1f41ae0b6d513acb2ee, type: 2}

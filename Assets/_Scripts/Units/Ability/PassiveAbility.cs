@@ -36,9 +36,8 @@ public class PassiveAbility : ScriptableAbility
     public List<Type> conditionTypeList = new List<Type>
     {
         typeof(Condition_Base),
-        typeof(Condition_SelfStat),
-        typeof(Condition_SelfTargetStat),
-        typeof(Condition_TargetStat)
+        typeof(Condition_TargetStat),
+        typeof(Condition_SelfTargetStat)
     };
 
     //[Header("Action")]
@@ -49,15 +48,6 @@ public class PassiveAbility : ScriptableAbility
         typeof(Action_Base),
         typeof(Action_StatMod),
         typeof(Action_StatusEffect)
-    };
-
-    //[Header("Target")]
-    [SerializeReference] public Target_Base target = new Target_Base();
-    [HideInInspector]
-    public List<Type> targetTypeList = new List<Type>
-    {
-        typeof(Target_Base),
-        typeof(Target_Relative),
     };
 
     //[Header("Limit")]
@@ -79,13 +69,19 @@ public class PassiveAbility : ScriptableAbility
 
         if(conditionMet)
         {
-            PerformAbility();
+            PerformAbility(unit);
         }
     }
 
-    public virtual void PerformAbility()//called by OnTriggerAbility
+    public virtual void PerformAbility(Unit unit)//called by OnTriggerAbility
     {
         Debug.Log("Perform ability");
+        new CCUnitStartAbility(unit.unitCID).AddToQueue();
+        foreach (var a in actions)
+        {
+            a.DoAction(unit);
+        }
+        new CCUnitEndAbility(unit.unitCID).AddToQueue();
     }
 
     public void EditorApplyTriggerType()
@@ -103,10 +99,10 @@ public class PassiveAbility : ScriptableAbility
         actions.Add((Action_Base)Activator.CreateInstance(actionTypeList[actionTypeIndex]));
     }
 
-    public void EditorApplyTargetType()
-    {
-        target = (Target_Base)Activator.CreateInstance(targetTypeList[targetTypeIndex]);
-    }
+    // public void EditorApplyTargetType()
+    // {
+    //     target = (Target_Base)Activator.CreateInstance(targetTypeList[targetTypeIndex]);
+    // }
 
 }
 
@@ -115,10 +111,10 @@ public class PassiveAbility : ScriptableAbility
 [CustomEditor(typeof(PassiveAbility))]
 public class PassiveAbilityEditor : Editor
 {
-    public Color32 triggerColor = new Color32(136, 193, 157, 255);
+    public Color32 triggerColor = new Color32(190, 104, 60, 255);
     public Color32 conditionColor = new Color32(50, 147, 122, 255);
     public Color32 actionColor = new Color32(74, 126, 221, 255);
-    public Color32 targetColor = new Color32(190, 104, 60, 255);
+    //public Color32 targetColor = new Color32(136, 193, 157, 255);
     public Color32 limitColor = new Color32(190, 60, 60, 255);
     public GUIStyle boldStyle = new GUIStyle();
 
@@ -165,16 +161,16 @@ public class PassiveAbilityEditor : Editor
         }
 
         ///Target
-        EditorGUILayout.Space();
-        EditorGUILayout.Space();
-        GUIStyle targetStyle = new GUIStyle(boldStyle);
-        targetStyle.normal.textColor = targetColor;
-        script.showTarget = EditorGUILayout.Foldout(script.showTarget, "    [ Target ]", true, targetStyle);
-        if (script.showTarget)
-        {
-            DisplayDropdown(script.target.GetType(), targetStyle, script.targetTypeList, ref script.targetTypeIndex, script.EditorApplyTargetType);
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("target"), true);
-        }
+        // EditorGUILayout.Space();
+        // EditorGUILayout.Space();
+        // GUIStyle targetStyle = new GUIStyle(boldStyle);
+        // targetStyle.normal.textColor = targetColor;
+        // script.showTarget = EditorGUILayout.Foldout(script.showTarget, "    [ Target ]", true, targetStyle);
+        // if (script.showTarget)
+        // {
+        //     DisplayDropdown(script.target.GetType(), targetStyle, script.targetTypeList, ref script.targetTypeIndex, script.EditorApplyTargetType);
+        //     EditorGUILayout.PropertyField(serializedObject.FindProperty("target"), true);
+        // }
 
         ///Limit
         EditorGUILayout.Space();

@@ -5,7 +5,9 @@ using UnityEngine;
 [System.Serializable]
 public class Action_Base
 {
-    public virtual void DoAction()
+    public Target_Relative target;
+    
+    public virtual void DoAction(Unit unit)
     {
         Debug.Log("This is Base Action");
     }

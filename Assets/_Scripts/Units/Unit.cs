@@ -15,11 +15,11 @@ public class Unit : MonoBehaviour
     public UnitCID unitCID;
 
     [Header("Display")]
-    [SerializeField] private SpriteRenderer _unitSprite;
-    [SerializeField] private TextMeshPro _nameDisplay;
-    [SerializeField] private TextMeshPro _healthDisplay;
-    [SerializeField] private TextMeshPro _attackDisplay;
-    [SerializeField] private TextMeshPro _shieldDisplay;
+    [SerializeField] public SpriteRenderer unitSprite;
+    [SerializeField] public TextMeshPro nameDisplay;
+    [SerializeField] public TextMeshPro healthDisplay;
+    [SerializeField] public TextMeshPro attackDisplay;
+    [SerializeField] public TextMeshPro shieldDisplay;
 
     #region MonoCall
 
@@ -40,27 +40,27 @@ public class Unit : MonoBehaviour
         if (unitData == null)
             return;
 
-        _nameDisplay.text = unitData.name;
-        _unitSprite.sprite = unitData.sprite;
+        nameDisplay.text = unitData.name;
+        unitSprite.sprite = unitData.sprite;
     }
 
     public void UpdateAttackDisplay(int newValue)
     {
-        _attackDisplay.text = newValue.ToString();
+        attackDisplay.text = newValue.ToString();
     }
 
     public void UpdateHealthDisplay(int newValue)
     {
-        _healthDisplay.text = newValue.ToString();
+        healthDisplay.text = newValue.ToString();
     }
 
     public void UpdateShieldDisplay(int newValue)
     {
-        _shieldDisplay.text = newValue.ToString();
+        shieldDisplay.text = newValue.ToString();
         if(newValue > 0)
-            _shieldDisplay.gameObject.SetActive(true);
+            shieldDisplay.gameObject.SetActive(true);
         else
-            _shieldDisplay.gameObject.SetActive(false);
+            shieldDisplay.gameObject.SetActive(false);
     }
 
     public void DestroySelf()//should only called by animation.PlayDeath() by CCUnitDie

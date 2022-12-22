@@ -12,7 +12,8 @@ public class TestScript : MonoBehaviour
 
     public void RunTest()
     {
-        unit.unitBattle.OnBattleStart();
+        unit.unitBattle.AbilityTest();
+        //unit.unitBattle.OnBattleStart();
     }
 }
 

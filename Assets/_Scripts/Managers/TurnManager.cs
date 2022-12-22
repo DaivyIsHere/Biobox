@@ -75,7 +75,7 @@ public class TurnManager : Singleton<TurnManager>
             }
             yield return 0;
         }
-        UpdateTurnState(nextState,1f);
+        UpdateTurnState(nextState,0.5f);
     }
 
     private void HandleBattleStart()
@@ -98,6 +98,7 @@ public class TurnManager : Singleton<TurnManager>
     {
         currentSide = currentSide.Opposite();
         turnCount += 1;
+        new CCAlignUnits().AddToQueue();
         UpdateTurnState(TurnState.TurnStart,1f);
     }
 
@@ -110,6 +111,8 @@ public class TurnManager : Singleton<TurnManager>
     {
         return (currentTurnState == TurnState.WaitForCurrentPlayer) && !isResolving && IsCurrentSide(boxSide);
     }
+
+
 }
 
 public enum TurnState

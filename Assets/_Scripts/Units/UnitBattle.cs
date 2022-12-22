@@ -27,6 +27,15 @@ public class UnitBattle : MonoBehaviour
     public event Action<Unit> OnUnit_OppoTurnStart;
     public event Action<Unit> OnUnit_OppoTurnEnd;
 
+    public event Action<Unit> OnUnit_BeforeAttack;
+    public event Action<Unit> OnUnit_AfterAttack;
+    public event Action<Unit> OnUnit_BeforeTakeHit;
+    public event Action<Unit> OnUnit_AfterTakeHit;
+    public event Action<Unit> OnUnit_AfterShieldBreak;
+    public event Action<Unit> OnUnit_AfterTakeDamage;
+    public event Action<Unit> OnUnit_BeforeDeath;
+
+
     [field: Header("Player Control")]
     [SerializeField] public bool canAttack = false;//set by player
 
@@ -43,7 +52,8 @@ public class UnitBattle : MonoBehaviour
 
     public void AbilityTest()
     {
-        OnUnit_SelfTurnEnd?.Invoke(this._unit);
+
+        //OnUnit_SelfTurnEnd?.Invoke(this._unit);
     }
 
     private void IniStats()
@@ -120,39 +130,33 @@ public class UnitBattle : MonoBehaviour
             {
                 damageToTake = damageValue - _stats.shield.currentValue;
                 shieldBreakValue = _stats.shield.currentValue;
-                _stats.shield.ApplyModifier(new StatModifier(-1 * shieldBreakValue, StatModType.Additive));
-                _stats.health.ApplyModifier(new StatModifier(-1 * damageToTake, StatModType.Additive));
+                TakeStatModifier(_statDB.shield, new StatModifier(-1 * shieldBreakValue, StatModType.Additive));
+                TakeStatModifier(_statDB.health, new StatModifier(-1 * damageToTake, StatModType.Additive));
 
-                new CCUnitShieldBreak(_unit.unitCID, shieldBreakValue, _stats.shield.currentValue).AddToQueue();
-                if (damageToTake > 0)
-                    new CCUnitTakeDamage(_unit.unitCID, damageToTake, _stats.health.currentValue).AddToQueue();
+                // _stats.shield.ApplyModifier(new StatModifier(-1 * shieldBreakValue, StatModType.Additive));
+                // _stats.health.ApplyModifier(new StatModifier(-1 * damageToTake, StatModType.Additive));
+
+                // new CCUnitShieldDecrease(_unit.unitCID, shieldBreakValue, _stats.shield.currentValue).AddToQueue();
+                // if (damageToTake > 0)
+                //     new CCUnitTakeDamage(_unit.unitCID, damageToTake, _stats.health.currentValue).AddToQueue();
 
             }
             else if (damageValue < _stats.shield.currentValue)
             {
                 shieldBreakValue = Mathf.CeilToInt(damageValue * 0.5f);
-                _stats.shield.ApplyModifier(new StatModifier(-1 * shieldBreakValue, StatModType.Additive));
+                TakeStatModifier(_statDB.shield, new StatModifier(-1 * shieldBreakValue, StatModType.Additive));
 
-                new CCUnitShieldBreak(_unit.unitCID, shieldBreakValue, _stats.shield.currentValue).AddToQueue();
+                //_stats.shield.ApplyModifier(new StatModifier(-1 * shieldBreakValue, StatModType.Additive));
+                //new CCUnitShieldDecrease(_unit.unitCID, shieldBreakValue, _stats.shield.currentValue).AddToQueue();
             }
         }
         else
         {
             damageToTake = damageValue;
-            _stats.health.ApplyModifier(new StatModifier(-1 * damageToTake, StatModType.Additive));
+            TakeStatModifier(_statDB.health, new StatModifier(-1 * damageToTake, StatModType.Additive));
 
-            new CCUnitTakeDamage(_unit.unitCID, damageToTake, _stats.health.currentValue).AddToQueue();
-        }
-
-        //dead or not
-        if (!IsDead())
-        {
-            new CCUnitHurt(_unit.unitCID).AddToQueue();
-        }
-        else
-        {
-            new CCUnitDie(_unit.unitCID).AddToQueue();
-            Die();
+            //_stats.health.ApplyModifier(new StatModifier(-1 * damageToTake, StatModType.Additive));
+            //new CCUnitTakeDamage(_unit.unitCID, damageToTake, _stats.health.currentValue).AddToQueue();
         }
     }
 
@@ -165,6 +169,55 @@ public class UnitBattle : MonoBehaviour
             return;
         if (_stats.attack.currentValue > 0)
             target.unitBattle.TakeDamage(_stats.attack.currentValue);
+    }
+
+    public void TakeStatModifier(StatDefinition definition, StatModifier modifier)
+    {
+        if (modifier.value == 0)
+            return;
+
+        if (definition == _statDB.attack)
+        {
+            _stats.attack.ApplyModifier(modifier, 0, float.MaxValue);
+            new CCUnitAttackChange(_unit.unitCID, (int)modifier.value, _stats.attack.currentValue).AddToQueue();
+        }
+        else if (definition == _statDB.health)
+        {
+            if (modifier.value > 0)
+            {
+                ///HEAL
+            }
+            else
+            {
+                _stats.health.ApplyModifier(modifier, float.MinValue, _stats.maxHealth.currentValue);
+                new CCUnitTakeDamage(_unit.unitCID, Mathf.Abs((int)modifier.value), _stats.health.currentValue).AddToQueue();
+            }
+            
+            if (!IsDead())
+            {
+                new CCUnitHurt(_unit.unitCID).AddToQueue();
+            }
+            else
+            {
+                new CCUnitDie(_unit.unitCID).AddToQueue();
+                Die();
+            }
+        }
+        else if (definition == _statDB.maxHealth)
+        {
+            _stats.maxHealth.ApplyModifier(modifier, 1, float.MaxValue);
+            if(_stats.maxHealth.currentValue <= _stats.health.currentValue)
+            {
+                _stats.health.ApplyModifier(new StatModifier(0, StatModType.Additive), float.MinValue, _stats.maxHealth.currentValue);
+                new CCUnitHealthChange(_unit.unitCID, _stats.maxHealth.currentValue -_stats.health.currentValue, _stats.maxHealth.currentValue).AddToQueue();
+            }
+        }
+        else if (definition == _statDB.shield)
+        {
+            _stats.shield.ApplyModifier(modifier, 0, float.MaxValue);
+            new CCUnitShieldDecrease(_unit.unitCID, Mathf.Abs((int)modifier.value), _stats.shield.currentValue).AddToQueue();
+            ///Check ShieldBreak
+        }
     }
 
     public void Die()

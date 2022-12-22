@@ -10,7 +10,9 @@ public class Target_Relative : Target_Base
     public override List<UnitCID> GetAllTargets(Unit unit)
     {
         List<UnitCID> targetUnits = new List<UnitCID>();
-        targetUnits.Add(BattleManager.Instance.GetRelativeUnit(unit.unitCID, relativePosition));
+        UnitCID targetCID = BattleManager.Instance.GetRelativeUnit(unit.unitCID, relativePosition);
+        if(targetCID.GetUnit())
+            targetUnits.Add(targetCID.GetUnit().unitCID);
         return targetUnits;
     }
 }

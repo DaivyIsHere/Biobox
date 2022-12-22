@@ -14,21 +14,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   info: 
   showTrigger: 1
-  showCondition: 1
-  showAction: 0
+  showCondition: 0
+  showAction: 1
   showTarget: 0
   showLimit: 0
   triggerTypeIndex: 1
-  conditionTypeIndex: 0
+  conditionTypeIndex: 1
   actionTypeIndex: 1
   targetTypeIndex: 1
   trigger:
     rid: 7277847122763317265
-  conditions:
-  - rid: 7277847122763317274
-  actions: []
-  target:
-    rid: 7277847122763317264
+  conditions: []
+  actions:
+  - rid: 7277847192531107840
   limit:
     rid: 7277847122763317248
   references:
@@ -39,18 +37,18 @@ MonoBehaviour:
       data:
         times: -1
         per: 1
-    - rid: 7277847122763317264
-      type: {class: Target_Relative, ns: , asm: Assembly-CSharp}
-      data:
-        relativePosition: 0
     - rid: 7277847122763317265
       type: {class: Trigger_BattleEvent, ns: , asm: Assembly-CSharp}
       data:
-        when: 1
-        startEnd: 0
-    - rid: 7277847122763317274
-      type: {class: Condition_SelfStat, ns: , asm: Assembly-CSharp}
+        when: 3
+        startEnd: 1
+    - rid: 7277847192531107840
+      type: {class: Action_StatMod, ns: , asm: Assembly-CSharp}
       data:
-        statDefinition: {fileID: 11400000, guid: a2b62202b3e8a1745ae009f28ea3c9cb, type: 2}
-        comparison: 3
-        compareValue: 1
+        target:
+          relativePosition: 0
+        statDefinition: {fileID: 11400000, guid: 24ab5caaaeb61d9488599f1165eb3194, type: 2}
+        statModifier:
+          value: -1
+          type: 0
+          order: 0

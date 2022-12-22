@@ -608,11 +608,11 @@ MonoBehaviour:
     orderInBox: 0
   unitCID:
     id: 0
-  _unitSprite: {fileID: 8676933619059120335}
-  _nameDisplay: {fileID: 5301034598986485473}
-  _healthDisplay: {fileID: 8676933617213128550}
-  _attackDisplay: {fileID: 8676933618665146458}
-  _shieldDisplay: {fileID: 1246480652}
+  unitSprite: {fileID: 8676933619059120335}
+  nameDisplay: {fileID: 5301034598986485473}
+  healthDisplay: {fileID: 8676933617213128550}
+  attackDisplay: {fileID: 8676933618665146458}
+  shieldDisplay: {fileID: 1246480652}
 --- !u!114 &3574618926649868495
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -632,15 +632,19 @@ MonoBehaviour:
     attack:
       definition: {fileID: 0}
       _baseValue: 0
+      _currentValue: 0
     health:
       definition: {fileID: 0}
       _baseValue: 0
+      _currentValue: 0
     maxHealth:
       definition: {fileID: 0}
       _baseValue: 0
+      _currentValue: 0
     shield:
       definition: {fileID: 0}
       _baseValue: 0
+      _currentValue: 0
   _effectDB: {fileID: 11400000, guid: 2de4fd851d423e14db7612fa12343486, type: 2}
   passiveAbility: {fileID: 0}
   canAttack: 0
