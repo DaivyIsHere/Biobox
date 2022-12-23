@@ -5,7 +5,7 @@ using UnityEngine;
 [System.Serializable]
 public class Action_Base
 {
-    public Target_Relative target;
+    public Target_AbsolutePosition target;
     
     public virtual void DoAction(Unit unit)
     {

@@ -185,17 +185,23 @@ public class UnitBattle : MonoBehaviour
         {
             if (modifier.value > 0)
             {
-                ///HEAL
+                _stats.health.ApplyModifier(modifier, float.MinValue, _stats.maxHealth.currentValue);
+                new CCUnitHeal(_unit.unitCID, Mathf.Abs((int)modifier.value), _stats.health.currentValue).AddToQueue();
             }
             else
             {
                 _stats.health.ApplyModifier(modifier, float.MinValue, _stats.maxHealth.currentValue);
                 new CCUnitTakeDamage(_unit.unitCID, Mathf.Abs((int)modifier.value), _stats.health.currentValue).AddToQueue();
             }
-            
+
             if (!IsDead())
             {
-                new CCUnitHurt(_unit.unitCID).AddToQueue();
+                if (modifier.value > 0)
+                {
+                    ///HEAL animation
+                }
+                else
+                    new CCUnitHurt(_unit.unitCID).AddToQueue();
             }
             else
             {
@@ -206,11 +212,15 @@ public class UnitBattle : MonoBehaviour
         else if (definition == _statDB.maxHealth)
         {
             _stats.maxHealth.ApplyModifier(modifier, 1, float.MaxValue);
-            if(_stats.maxHealth.currentValue <= _stats.health.currentValue)
-            {
-                _stats.health.ApplyModifier(new StatModifier(0, StatModType.Additive), float.MinValue, _stats.maxHealth.currentValue);
-                new CCUnitHealthChange(_unit.unitCID, _stats.maxHealth.currentValue -_stats.health.currentValue, _stats.maxHealth.currentValue).AddToQueue();
-            }
+            _stats.health.ApplyModifier(modifier, float.MinValue, _stats.maxHealth.currentValue);
+            new CCUnitHeal(_unit.unitCID, Mathf.Abs((int)modifier.value), _stats.health.currentValue).AddToQueue();
+            //new CCUnitHealthChange(_unit.unitCID, _stats.maxHealth.currentValue - _stats.health.currentValue, _stats.maxHealth.currentValue).AddToQueue();
+
+            // if(_stats.maxHealth.currentValue <= _stats.health.currentValue)
+            // {
+            //     _stats.health.ApplyModifier(new StatModifier(0, StatModType.Additive), float.MinValue, _stats.maxHealth.currentValue);
+            //     new CCUnitHealthChange(_unit.unitCID, _stats.maxHealth.currentValue -_stats.health.currentValue, _stats.maxHealth.currentValue).AddToQueue();
+            // }
         }
         else if (definition == _statDB.shield)
         {

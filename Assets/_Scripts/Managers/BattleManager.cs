@@ -188,6 +188,7 @@ public class BattleManager : Singleton<BattleManager>
         Unit selfUnit = selfCID.GetUnit();
         BoxLabel selfBox = selfUnit.unitLabel.boxLabel;
         List<Unit> unitsInBox = selfBox.GetBox().unitList;
+
         switch (relativePosition)
         {
             case TargetRelative_Position.Self:
@@ -205,5 +206,50 @@ public class BattleManager : Singleton<BattleManager>
         }
 
         return new UnitCID(-1);
+    }
+
+    public List<UnitCID> GetAllUnitCIDByBox(BoxLabel label)
+    {
+        List<UnitCID> unitCIDs = new List<UnitCID>();
+        foreach (var u in label.GetBox().unitList)
+        {
+            unitCIDs.Add(u.unitCID);
+        }
+        return unitCIDs;
+    }
+
+    public List<UnitCID> GetAboslutePositionUnit(UnitCID selfCID, TargetAbsolutePosition_RelativeBox relativeBox ,TargetAbsolutePosition_Position position)
+    {
+        List<UnitCID> unitCIDs = new List<UnitCID>();
+        Unit selfUnit = selfCID.GetUnit();
+        BoxLabel targetBox = new BoxLabel();//
+        if(relativeBox == TargetAbsolutePosition_RelativeBox.SelfBox)
+        {
+            targetBox = selfUnit.unitLabel.boxLabel;
+        }
+        else if (relativeBox == TargetAbsolutePosition_RelativeBox.OppositeBox)
+        {
+            targetBox = selfUnit.unitLabel.boxLabel;
+            targetBox.boxSide = targetBox.boxSide.Opposite();
+        }
+        List<Unit> unitsInBox = targetBox.GetBox().unitList;
+
+        switch (position)
+        {
+            case TargetAbsolutePosition_Position.All:
+                return GetAllUnitCIDByBox(targetBox);
+            case TargetAbsolutePosition_Position.First:
+                unitCIDs.Add(unitsInBox[0].unitCID);
+                return unitCIDs;
+            case TargetAbsolutePosition_Position.Last:
+                unitCIDs.Add(unitsInBox[unitsInBox.Count-1].unitCID);
+                return unitCIDs;
+            case TargetAbsolutePosition_Position.Random:
+                int random = Random.Range(0, unitsInBox.Count);
+                unitCIDs.Add(unitsInBox[random].unitCID);
+                return unitCIDs;
+        }
+
+        return unitCIDs;
     }
 }

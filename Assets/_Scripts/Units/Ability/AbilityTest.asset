@@ -17,16 +17,16 @@ MonoBehaviour:
   showCondition: 0
   showAction: 1
   showTarget: 0
-  showLimit: 0
-  triggerTypeIndex: 1
+  showLimit: 1
+  triggerTypeIndex: 0
   conditionTypeIndex: 1
-  actionTypeIndex: 1
+  actionTypeIndex: 0
   targetTypeIndex: 1
   trigger:
-    rid: 7277847122763317265
+    rid: 7277847215526641664
   conditions: []
   actions:
-  - rid: 7277847192531107840
+  - rid: 7277847215526641668
   limit:
     rid: 7277847122763317248
   references:
@@ -37,18 +37,19 @@ MonoBehaviour:
       data:
         times: -1
         per: 1
-    - rid: 7277847122763317265
+    - rid: 7277847215526641664
       type: {class: Trigger_BattleEvent, ns: , asm: Assembly-CSharp}
       data:
         when: 3
         startEnd: 1
-    - rid: 7277847192531107840
+    - rid: 7277847215526641668
       type: {class: Action_StatMod, ns: , asm: Assembly-CSharp}
       data:
         target:
-          relativePosition: 0
-        statDefinition: {fileID: 11400000, guid: 24ab5caaaeb61d9488599f1165eb3194, type: 2}
+          position: 1
+          relativeBox: 0
+        statDefinition: {fileID: 11400000, guid: a2b62202b3e8a1745ae009f28ea3c9cb, type: 2}
         statModifier:
-          value: -1
+          value: 1
           type: 0
           order: 0

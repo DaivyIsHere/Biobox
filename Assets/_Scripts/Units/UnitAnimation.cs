@@ -79,6 +79,15 @@ public class UnitAnimation : MonoBehaviour
         _unit.UpdateShieldDisplay(shieldAfter);
     }
 
+    public void PlayHeal(int value, int valueAfter)
+    {
+        ValuePopup valuePopup = Instantiate(_valuePopupPref, transform.position + _valuePopupOffset_Damage, Quaternion.identity);
+        valuePopup.popupType = ValuePopupType.Heal;
+        valuePopup.displayValue = value;
+
+        _unit.UpdateHealthDisplay(valueAfter);
+    }
+
     public void PlayHurt()
     {
         ResetAllTweens();
@@ -119,22 +128,40 @@ public class UnitAnimation : MonoBehaviour
 
     public void PlayAttackChange(int changeValue, int valueAfter)
     {
-        _unit.attackDisplay.transform.DOPunchPosition(new Vector3(0, 0.3f, 0), 0.2f, 10, 0.5f).OnComplete(() =>
-            CCommand.CommandExecutionComplete());
+        if (changeValue > 0)
+        {
+            _unit.attackDisplay.transform.DOPunchPosition(new Vector3(0, 0.3f, 0), 0.2f, 10, 0.5f).OnComplete(() =>
+                CCommand.CommandExecutionComplete());
+        }
+        else
+        {
+            _unit.attackDisplay.transform.DOPunchPosition(new Vector3(0, -0.3f, 0), 0.2f, 10, 0.5f).OnComplete(() =>
+                CCommand.CommandExecutionComplete());
+        }
+
         _unit.UpdateAttackDisplay(valueAfter);
     }
 
     public void PlayHealthChange(int changeValue, int valueAfter)
     {
-        _unit.healthDisplay.transform.DOPunchPosition(new Vector3(0, 0.3f, 0), 0.2f, 10, 0.5f).OnComplete(() =>
-            CCommand.CommandExecutionComplete());
+        if (changeValue > 0)
+        {
+            _unit.healthDisplay.transform.DOPunchPosition(new Vector3(0, 0.3f, 0), 0.2f, 10, 0.5f).OnComplete(() =>
+                CCommand.CommandExecutionComplete());
+        }
+        else
+        {
+            _unit.healthDisplay.transform.DOPunchPosition(new Vector3(0, -0.3f, 0), 0.2f, 10, 0.5f).OnComplete(() =>
+                CCommand.CommandExecutionComplete());
+        }
+
         _unit.UpdateHealthDisplay(valueAfter);
     }
 
     public void PlayStartAbility()
     {
         float originalY = _startLocalPos.y;
-        _unitSprite.DOLocalMoveY(originalY+0.2f, 0.2f).SetEase(Ease.InOutSine).OnComplete(() =>
+        _unitSprite.DOLocalMoveY(originalY + 0.2f, 0.2f).SetEase(Ease.InOutSine).OnComplete(() =>
             CCommand.CommandExecutionComplete());
     }
 

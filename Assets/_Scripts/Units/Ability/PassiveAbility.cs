@@ -25,7 +25,7 @@ public class PassiveAbility : ScriptableAbility
     [HideInInspector]
     public List<Type> triggerTypeList = new List<Type>
     {
-        typeof(Trigger_Base),
+        //typeof(Trigger_Base),
         typeof(Trigger_BattleEvent),
     };
 
@@ -35,7 +35,7 @@ public class PassiveAbility : ScriptableAbility
     [HideInInspector]
     public List<Type> conditionTypeList = new List<Type>
     {
-        typeof(Condition_Base),
+        //typeof(Condition_Base),
         typeof(Condition_TargetStat),
         typeof(Condition_SelfTargetStat)
     };
@@ -45,7 +45,7 @@ public class PassiveAbility : ScriptableAbility
     [HideInInspector]
     public List<Type> actionTypeList = new List<Type>
     {
-        typeof(Action_Base),
+        //typeof(Action_Base),
         typeof(Action_StatMod),
         typeof(Action_StatusEffect)
     };
@@ -60,14 +60,17 @@ public class PassiveAbility : ScriptableAbility
 
     public virtual void OnTriggerAbility(Unit unit)//sub by trigger
     {
+        if (unit.unitBattle.IsDead())
+            return;
+
         bool conditionMet = true;
         foreach (var c in conditions)
         {
-            if(!c.ConditionMet(unit))
+            if (!c.ConditionMet(unit))
                 conditionMet = false;
         }
 
-        if(conditionMet)
+        if (conditionMet)
         {
             PerformAbility(unit);
         }
@@ -99,11 +102,6 @@ public class PassiveAbility : ScriptableAbility
         actions.Add((Action_Base)Activator.CreateInstance(actionTypeList[actionTypeIndex]));
     }
 
-    // public void EditorApplyTargetType()
-    // {
-    //     target = (Target_Base)Activator.CreateInstance(targetTypeList[targetTypeIndex]);
-    // }
-
 }
 
 #region Editor
@@ -111,18 +109,26 @@ public class PassiveAbility : ScriptableAbility
 [CustomEditor(typeof(PassiveAbility))]
 public class PassiveAbilityEditor : Editor
 {
-    public Color32 triggerColor = new Color32(190, 104, 60, 255);
-    public Color32 conditionColor = new Color32(50, 147, 122, 255);
-    public Color32 actionColor = new Color32(74, 126, 221, 255);
-    //public Color32 targetColor = new Color32(136, 193, 157, 255);
-    public Color32 limitColor = new Color32(190, 60, 60, 255);
-    public GUIStyle boldStyle = new GUIStyle();
+    private PassiveAbility script;
+
+    private Color32 triggerColor = new Color32(190, 104, 60, 255);
+    private Color32 conditionColor = new Color32(50, 147, 122, 255);
+    private Color32 actionColor = new Color32(74, 126, 221, 255);
+    //private Color32 targetColor = new Color32(136, 193, 157, 255);
+    private Color32 limitColor = new Color32(190, 60, 60, 255);
+    private GUIStyle boldStyle = new GUIStyle();
+
+    void OnEnable()
+    {
+        script = (PassiveAbility)target;
+        boldStyle.fontStyle = FontStyle.Bold;
+    }
 
     public override void OnInspectorGUI()
     {
         serializedObject.Update();
-        PassiveAbility script = (PassiveAbility)target;
-        boldStyle.fontStyle = FontStyle.Bold;
+        //PassiveAbility script = (PassiveAbility)target;
+        //boldStyle.fontStyle = FontStyle.Bold;
 
         ///Trigger
         EditorGUILayout.Space();
@@ -188,7 +194,7 @@ public class PassiveAbilityEditor : Editor
 
     public void DisplayDropdown(Type currentType, GUIStyle infoStyle, List<Type> typeList, ref int dropDownIndex, Action applyAction)
     {
-        PassiveAbility script = (PassiveAbility)target;
+        //PassiveAbility script = (PassiveAbility)target;
         //Construct a new list of every actionType's name
         List<string> typeNameList = new List<string>();
         foreach (var t in typeList)
