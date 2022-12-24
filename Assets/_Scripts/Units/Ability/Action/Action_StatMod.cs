@@ -1,11 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Sirenix.OdinInspector;
 
 [System.Serializable]
 public class Action_StatMod : Action_Base
 {
+    [TabGroup("StatMod")]
+    [AssetSelector]
     public StatDefinition statDefinition;
+    [TabGroup("StatMod")]
     public StatModifier statModifier;
 
     public override void DoAction(Unit unit)

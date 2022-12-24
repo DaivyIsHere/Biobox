@@ -2,11 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using Sirenix.OdinInspector;
 
 [Serializable]
 public class StatModifier
 {
     public float value;
+    [EnumToggleButtons]
     public StatModType type;
     [HideInInspector] public int order;
     public object source;

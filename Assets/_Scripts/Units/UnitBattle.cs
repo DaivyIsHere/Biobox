@@ -185,8 +185,9 @@ public class UnitBattle : MonoBehaviour
         {
             if (modifier.value > 0)
             {
-                _stats.health.ApplyModifier(modifier, float.MinValue, _stats.maxHealth.currentValue);
-                new CCUnitHeal(_unit.unitCID, Mathf.Abs((int)modifier.value), _stats.health.currentValue).AddToQueue();
+                int displayValue = _stats.health.ApplyModifier(modifier, float.MinValue, _stats.maxHealth.currentValue);
+                //if(displayValue > 0)
+                new CCUnitHeal(_unit.unitCID, displayValue , _stats.health.currentValue).AddToQueue();
             }
             else
             {

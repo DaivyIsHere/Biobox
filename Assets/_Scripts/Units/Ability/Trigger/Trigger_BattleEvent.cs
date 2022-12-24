@@ -2,11 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using Sirenix.OdinInspector;
 
 [System.Serializable]
 public class Trigger_BattleEvent : Trigger_Base
 {
+    [Space]
+    [EnumToggleButtons]
     public TriggerBattleEvent_When when;
+    [Space]
+    [EnumToggleButtons]
     public TriggerBattleEvent_StartEnd startEnd;
 
     public override void RegisterTrigger(Unit unit, Action<Unit> onTriggerAbility)

@@ -1,0 +1,55 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e70054a6d7490b4eb0a0305d9461a7a, type: 3}
+  m_Name: AbilityTest_Legacy
+  m_EditorClassIdentifier: 
+  info: 
+  showTrigger: 1
+  showCondition: 0
+  showAction: 1
+  showTarget: 0
+  showLimit: 1
+  triggerTypeIndex: 0
+  conditionTypeIndex: 1
+  actionTypeIndex: 0
+  targetTypeIndex: 1
+  trigger:
+    rid: 7277847215526641664
+  conditions: []
+  actions:
+  - rid: 7277847215526641668
+  limit:
+    rid: 7277847122763317248
+  references:
+    version: 2
+    RefIds:
+    - rid: 7277847122763317248
+      type: {class: Limit_Base, ns: , asm: Assembly-CSharp}
+      data:
+        times: -1
+        per: 1
+    - rid: 7277847215526641664
+      type: {class: Trigger_BattleEvent, ns: , asm: Assembly-CSharp}
+      data:
+        when: 3
+        startEnd: 1
+    - rid: 7277847215526641668
+      type: {class: Action_StatMod, ns: , asm: Assembly-CSharp}
+      data:
+        target:
+          position: 1
+          relativeBox: 0
+        statDefinition: {fileID: 11400000, guid: a2b62202b3e8a1745ae009f28ea3c9cb, type: 2}
+        statModifier:
+          value: 1
+          type: 0
+          order: 0

@@ -5,6 +5,10 @@ using System.Text;
 
 public class Box : MonoBehaviour
 {
+    [Header("Unit")]
+    public List<Unit> unitList;
+    public BoxData boxData;
+
     [Header("Reference")]
     public Transform unitsContainer;
 
@@ -12,10 +16,6 @@ public class Box : MonoBehaviour
     [SerializeField] private SpriteRenderer _boxBG;
     [SerializeField] private Color _defaultColor;
     [SerializeField] private Color _highlightColor;
-    
-    [Header("Unit")]
-    public BoxData boxData;
-    public List<Unit> unitList;
 
     [Header("Label")]
     public BoxLabel boxLabel;

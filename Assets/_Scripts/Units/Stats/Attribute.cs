@@ -60,8 +60,12 @@ public class Attribute : Stat
         }
     }
 
-    public virtual void ApplyModifier(StatModifier modifier, float minValue, float maxValue)
+    /// <summary>
+    /// One time modifier, it will return how much the value actually changed
+    /// </summary>
+    public virtual int ApplyModifier(StatModifier modifier, float minValue, float maxValue)
     {
+        int oldValue = _currentValue;
         float newValue = _currentValue;
         switch (modifier.type)
         {
@@ -82,12 +86,15 @@ public class Attribute : Stat
         //Clamp
         newValue = Mathf.Clamp(newValue, minValue ,maxValue);
 
+
         if(currentValue != newValue)
         {
             _currentValue = (int)Math.Round(newValue,4);
             onCurrentValueChanged?.Invoke((int)Math.Round(newValue,4));
             appliedModifier?.Invoke(modifier);
         }
+
+        return _currentValue - oldValue;
     }
 
 }

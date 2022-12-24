@@ -1,14 +1,27 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Sirenix.OdinInspector;
 
 [System.Serializable]
 public class Condition_TargetStat : Condition_Base
 {
-    public Target_Relative target;
+    [PropertyOrder(99)]
+    [TabGroup("Target")]
+    [ValueDropdown("targetList")]
+    [SerializeReference] public Target_Base target;
+    private List<Target_Base> targetList = new List<Target_Base>
+    {
+        new Target_Relative(),
+        new Target_AbsolutePosition()
+    };
 
+    [TabGroup("StatMod")]
+    [AssetSelector]
     public StatDefinition statDefinition;
+    [TabGroup("StatMod")]
     public Condition_Comparison comparison;
+    [TabGroup("StatMod")]
     public int compareValue;
 
     public override bool ConditionMet(Unit unit)
@@ -36,7 +49,7 @@ public class Condition_TargetStat : Condition_Base
                 break;
         }
 
-       Debug.Log("<Condition> SelfStat of " + statDefinition.name + " is " + comparison.ToString() + " than " + compareValue + " , result : "+ result);
+        Debug.Log("<Condition> SelfStat of " + statDefinition.name + " is " + comparison.ToString() + " than " + compareValue + " , result : " + result);
         return result;
     }
 }

@@ -1,12 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Sirenix.OdinInspector;
 
 public class BattleManager : Singleton<BattleManager>
 {
     [Header("Reference")]
+    [InlineEditor(InlineEditorModes.GUIOnly)]
     public List<Box> leftBoxes;
+    [InlineEditor(InlineEditorModes.GUIOnly)]
     public List<Box> rightBoxes;
+    
     public Player leftPlayer;
     public Player rightPlayer;
     [SerializeField] private BoardLayout _boardLayout;
