@@ -18,6 +18,6 @@ public class CCUnitHeal : CCommand
     public override void StartCommandExecution()
     {
         _targetCID.GetUnit().unitAnimation.PlayHeal(_healValue, _healthAfter);
-        CCommand.CommandExecutionComplete();
+        //CCommand.CommandExecutionComplete();
     }
 }

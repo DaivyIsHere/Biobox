@@ -7,7 +7,7 @@ public class Action_StatusEffect : Action_Base
 {
     public StatusEffect statusEffect;
     
-    public override void DoAction(Unit unit)
+    public override void DoAction(Unit selfUnit)
     {
         Debug.Log("Apply StatusEffect");
     }

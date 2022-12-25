@@ -11,73 +11,86 @@ public class PassiveAbility : ScriptableAbility
     [Title("Trigger", "⏑", TitleAlignments.Centered)]
     [ValueDropdown("triggerList")]
     [SerializeReference] public Trigger_Base trigger = new Trigger_Base();
-    private List<Trigger_Base> triggerList = new List<Trigger_Base>
+    private List<Trigger_Base> triggerList()
     {
-        new Trigger_BattleEvent()
-    };
+        return new List<Trigger_Base>()
+        {
+            new Trigger_BattleEvent(),
+            new Trigger_UnitEvent()
+        };
+    }
 
     [TabGroup("Condition")]
     [Title("Condition", "⏑", TitleAlignments.Centered)]
     [ValueDropdown("conditionList")]
     [SerializeReference] public List<Condition_Base> conditions = new List<Condition_Base>();
-    private List<Condition_Base> conditionList = new List<Condition_Base>
+    private List<Condition_Base> conditionList()
     {
-        new Condition_TargetStat(),
-        new Condition_SelfTargetStat()
-    };
+        return new List<Condition_Base>()
+        {
+            new Condition_TargetStat(),
+            new Condition_SelfTargetStat(),
+        };
+    }
 
     [TabGroup("Action")]
     [Title("Action", "⏑", TitleAlignments.Centered)]
     [ValueDropdown("actionList")]
     [SerializeReference] public List<Action_Base> actions = new List<Action_Base>();
-    private List<Action_Base> actionList = new List<Action_Base>
+    private List<Action_Base> actionList()
     {
-        new Action_StatMod(),
-        new Action_StatusEffect()
-    };
+        return new List<Action_Base>()
+        {
+            new Action_StatMod(),
+            new Action_DamageAttack(),
+            new Action_StatusEffect()
+        };
+    }
 
     [TabGroup("Limit")]
     [HideLabel]
     [Title("Limit", "⏑", TitleAlignments.Centered)]
     public Limit_Base limit = new Limit_Base();
 
-    private void UninitializeAbility() 
+    public void UninitializeAbility(Unit unit)
     {
-
+        trigger.UnregisterTrigger(unit, OnTriggerAbility);
     }
 
-    public virtual void InitializeAbiltiy(Unit unit)
+    public virtual void InitializeAbility(Unit unit)
     {
         trigger.RegisterTrigger(unit, OnTriggerAbility);
     }
 
-    public virtual void OnTriggerAbility(Unit unit)//sub by trigger
+    public virtual void OnTriggerAbility(Unit selfUnit)//sub by trigger
     {
-        if (unit.unitBattle.IsDead())
-            return;
+        //if (unit.unitBattle.IsDead())
+            //return;
 
         bool conditionMet = true;
         foreach (var c in conditions)
         {
-            if (!c.ConditionMet(unit))
+            if (!c.ConditionMet(selfUnit))
                 conditionMet = false;
         }
 
         if (conditionMet)
         {
-            PerformAbility(unit);
+            PerformAbility(selfUnit);
         }
     }
 
-    public virtual void PerformAbility(Unit unit)//called by OnTriggerAbility
+    public virtual void PerformAbility(Unit selfUnit)//called by OnTriggerAbility
     {
         Debug.Log("Perform ability");
-        new CCUnitStartAbility(unit.unitCID).AddToQueue();
+        new CCUnitStartAbility(selfUnit.unitCID).AddToQueue();
         foreach (var a in actions)
         {
-            a.DoAction(unit);
+            a.DoAction(selfUnit);
         }
-        new CCUnitEndAbility(unit.unitCID).AddToQueue();
+
+        if(!selfUnit.unitBattle.IsDead())
+            new CCUnitEndAbility(selfUnit.unitCID).AddToQueue();
     }
 
 }

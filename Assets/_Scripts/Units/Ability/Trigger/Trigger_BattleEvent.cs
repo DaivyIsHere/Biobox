@@ -50,6 +50,43 @@ public class Trigger_BattleEvent : Trigger_Base
                 break;
         }
     }
+
+    public override void UnregisterTrigger(Unit unit, Action<Unit> onTriggerAbility)
+    {
+        switch (when)
+        {
+            case TriggerBattleEvent_When.Battle:
+                if (startEnd == TriggerBattleEvent_StartEnd.Start)
+                    unit.unitBattle.OnUnit_BattleStart -= onTriggerAbility;
+                else if (startEnd == TriggerBattleEvent_StartEnd.End)
+                    Debug.LogWarning("DO NOT use onBattleEnd to trigger ability");
+                break;
+            case TriggerBattleEvent_When.SelfTurn:
+                if (startEnd == TriggerBattleEvent_StartEnd.Start)
+                    unit.unitBattle.OnUnit_SelfTurnStart -= onTriggerAbility;
+                else if (startEnd == TriggerBattleEvent_StartEnd.End)
+                    unit.unitBattle.OnUnit_SelfTurnEnd -= onTriggerAbility;
+                break;
+            case TriggerBattleEvent_When.OpponentTurn:
+                if (startEnd == TriggerBattleEvent_StartEnd.Start)
+                    unit.unitBattle.OnUnit_OppoTurnStart -= onTriggerAbility;
+                else if (startEnd == TriggerBattleEvent_StartEnd.End)
+                    unit.unitBattle.OnUnit_OppoTurnEnd -= onTriggerAbility;
+                break;
+            case TriggerBattleEvent_When.AnyTurn:
+                if (startEnd == TriggerBattleEvent_StartEnd.Start)
+                {
+                    unit.unitBattle.OnUnit_SelfTurnStart -= onTriggerAbility;
+                    unit.unitBattle.OnUnit_OppoTurnStart -= onTriggerAbility;
+                }
+                else if (startEnd == TriggerBattleEvent_StartEnd.End)
+                {
+                    unit.unitBattle.OnUnit_SelfTurnEnd -= onTriggerAbility;
+                    unit.unitBattle.OnUnit_OppoTurnEnd -= onTriggerAbility;
+                }
+                break;
+        }
+    }
 }
 
 public enum TriggerBattleEvent_When

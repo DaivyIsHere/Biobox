@@ -12,10 +12,12 @@ public class Target_AbsolutePosition : Target_Base
     [Space]
     [EnumToggleButtons]
     public TargetAbsolutePosition_RelativeBox box;
+    [Space]
+    public int targetCount = 1;
 
     public override List<UnitCID> GetAllTargets(Unit unit)
     {
-        return BattleManager.Instance.GetAboslutePositionUnit(unit.unitCID, box, position);
+        return BattleManager.Instance.GetAboslutePositionUnit(unit.unitCID, box, position, targetCount);
     }
 }
 

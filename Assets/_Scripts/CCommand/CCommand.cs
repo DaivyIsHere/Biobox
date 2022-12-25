@@ -38,6 +38,7 @@ public class CCommand
     public static void PlayFirstCommandFromQueue()
     {
         playingQueue = true;
+        //Debug.Log("Play : " + CCommandQueue.Peek().GetType().ToString());
         CCommandQueue.Dequeue().StartCommandExecution();
     }
 }

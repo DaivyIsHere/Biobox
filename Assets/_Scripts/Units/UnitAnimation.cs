@@ -61,13 +61,19 @@ public class UnitAnimation : MonoBehaviour
         PlayExhaust();
     }
 
-    public void PlayTakeDamage(int damageValue, int healthAfter)
+    public void PlayTakeDamage(int damageValue, int healthAfter, bool causeDeath)
     {
         ValuePopup valuePopup = Instantiate(_valuePopupPref, transform.position + _valuePopupOffset_Damage, Quaternion.identity);
         valuePopup.popupType = ValuePopupType.Damage;
         valuePopup.displayValue = damageValue;
 
         _unit.UpdateHealthDisplay(healthAfter);
+        CCommand.CommandExecutionComplete();
+
+        //if(!causeDeath)
+        //  PlayHurt();
+        //else
+        //  PlayDeath();
     }
 
     public void PlayShieldBreak(int shieldBreakValue, int shieldAfter)
@@ -77,6 +83,10 @@ public class UnitAnimation : MonoBehaviour
         valuePopup.displayValue = shieldBreakValue;
 
         _unit.UpdateShieldDisplay(shieldAfter);
+
+        _sequence = DOTween.Sequence();//Start sequence
+        _sequence.AppendInterval(0.5f);
+        _sequence.OnComplete(CCommand.CommandExecutionComplete);
     }
 
     public void PlayHeal(int value, int valueAfter)
@@ -86,6 +96,9 @@ public class UnitAnimation : MonoBehaviour
         valuePopup.displayValue = value;
 
         _unit.UpdateHealthDisplay(valueAfter);
+        _sequence = DOTween.Sequence();//Start sequence
+        _sequence.AppendInterval(0.5f);
+        _sequence.OnComplete(CCommand.CommandExecutionComplete);
     }
 
     public void PlayHurt()
@@ -108,6 +121,7 @@ public class UnitAnimation : MonoBehaviour
         // TODO play deathAnimation
         ResetAllTweens();
         _sequence = DOTween.Sequence();//Start sequence
+        _sequence.Append(_unitSprite.DOScaleY(0.2f,0.5f));
         _sequence.AppendInterval(0f);
         _sequence.OnComplete(_unit.DestroySelf);
         ///We called CCommand.CommandExecutionComplete in _unit.DestroySelf

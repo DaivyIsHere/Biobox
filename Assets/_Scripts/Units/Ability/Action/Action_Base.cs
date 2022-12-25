@@ -16,7 +16,7 @@ public class Action_Base
         new Target_AbsolutePosition()
     };
     
-    public virtual void DoAction(Unit unit)
+    public virtual void DoAction(Unit selfUnit)
     {
         Debug.Log("This is Base Action");
     }

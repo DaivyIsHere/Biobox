@@ -18,6 +18,6 @@ public class CCUnitShieldDecrease : CCommand
     public override void StartCommandExecution()
     {
         _targetCID.GetUnit().unitAnimation.PlayShieldBreak(_shieldBreakValue, _shieldAfter);
-        CCommand.CommandExecutionComplete();
+        //CCommand.CommandExecutionComplete();
     }
 }

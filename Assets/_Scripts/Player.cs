@@ -5,8 +5,8 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     public BoxSide playerSide;
-    [SerializeField] private List<Box> _allOwnBoxes = new List<Box>();
-    [SerializeField] private List<Unit> _allOwnUnits = new List<Unit>();
+    [SerializeField] public List<Box> allOwnBoxes = new List<Box>();
+    [SerializeField] public List<Unit> allOwnUnits = new List<Unit>();
 
     void Awake()
     {
@@ -39,7 +39,7 @@ public class Player : MonoBehaviour
         AllOwnUnits();
 
         //UnitTrigger
-        foreach (var u in _allOwnUnits)
+        foreach (var u in allOwnUnits)
             u.unitBattle.OnBattleStart();
     }
 
@@ -49,13 +49,13 @@ public class Player : MonoBehaviour
         {
             
             //UnitTrigger
-            foreach (var u in _allOwnUnits)
+            foreach (var u in allOwnUnits)
                 u.unitBattle.OnSelfTurnEnd();
         }
         else
         {
             //UnitTrigger
-            foreach (var u in _allOwnUnits)
+            foreach (var u in allOwnUnits)
                 u.unitBattle.OnOppoTurnEnd();
         }
     }
@@ -65,13 +65,13 @@ public class Player : MonoBehaviour
         if (currentSide == playerSide)
         {
             //UnitTrigger
-            foreach (var u in _allOwnUnits)
+            foreach (var u in allOwnUnits)
                 u.unitBattle.OnSelfTurnStart();
         }
         else
         {
             //UnitTrigger
-            foreach (var u in _allOwnUnits)
+            foreach (var u in allOwnUnits)
                 u.unitBattle.OnOppoTurnStart();
         }
     }
@@ -104,27 +104,27 @@ public class Player : MonoBehaviour
 
     public List<Unit> AllOwnUnits()
     {
-        _allOwnUnits.Clear();
+        allOwnUnits.Clear();
         foreach (var b in BattleManager.Instance.GetBoxesBySide(playerSide))
         {
             foreach (var u in b.unitList)
             {
-                _allOwnUnits.Add(u);
+                allOwnUnits.Add(u);
             }
         }
 
-        return _allOwnUnits;
+        return allOwnUnits;
     }
 
     public List<Box> AllOwnBoxes()
     {
-        _allOwnBoxes.Clear();
+        allOwnBoxes.Clear();
         foreach (var b in BattleManager.Instance.GetBoxesBySide(playerSide))
         {
-            _allOwnBoxes.Add(b);
+            allOwnBoxes.Add(b);
         }
 
-        return _allOwnBoxes;
+        return allOwnBoxes;
     }
 
     private bool IsAllUnitExhauseted()
