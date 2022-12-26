@@ -20,7 +20,10 @@ public class BattleManager : Singleton<BattleManager>
     [SerializeField] private GameObject _boxPref;
     [SerializeField] private GameObject _unitPref;
 
+
+
     //BattleEvent
+    public event Action<UnitLabel, Trigger_Base> OnTriggerBattleEvent;
     // public event Action<Unit, BoxSide> OnSide_UnitBeforeAttack;
     // public event Action<Unit, BoxSide> OnSide_UnitAfterAttack;
     // public event Action<Unit, BoxSide> OnSide_UnitBeforeTakeHit;
@@ -312,8 +315,37 @@ public class BattleManager : Singleton<BattleManager>
         return unitCIDs;
     }
 
+    public void TriggerBattleEvent(UnitLabel triggererLabel, Trigger_Base trigger)
+    {
+        if (triggererLabel.boxSide == BoxSide.LeftSide)
+        {
+            foreach (var u in leftPlayer.allOwnUnits)
+            {
+                u.unitBattle.OnBattleEvent(triggererLabel, trigger);
+            }
+            foreach (var u in rightPlayer.allOwnUnits)
+            {
+                u.unitBattle.OnBattleEvent(triggererLabel, trigger);
+            }
+        }
+        else if (triggererLabel.boxSide == BoxSide.RightSide)
+        {
+            foreach (var u in rightPlayer.allOwnUnits)
+            {
+                u.unitBattle.OnBattleEvent(triggererLabel, trigger);
+            }
+            foreach (var u in leftPlayer.allOwnUnits)
+            {
+                u.unitBattle.OnBattleEvent(triggererLabel, trigger);
+            }
+        }
+        
+        //OnTriggerBattleEvent?.Invoke(triggererLabel, trigger);
+    }
+
     #region EventHooks
 
+    /*
     public void InvokeEvent_UnitBeforeAttack(Unit unit)
     {
         if (unit.unitLabel.boxSide == BoxSide.LeftSide)
@@ -458,6 +490,7 @@ public class BattleManager : Singleton<BattleManager>
         }
     }
 
-
+    */
     #endregion
+
 }

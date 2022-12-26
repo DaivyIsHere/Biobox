@@ -13,36 +13,36 @@ public class Trigger_UnitEvent : Trigger_Base
     [Space]
     [EnumToggleButtons]
     public TriggerUnitEvent_Event unitEvent;
-
-    public override void RegisterTrigger(Unit unit, Action<Unit> onTriggerAbility)
+    /*
+    public override void RegisterTrigger(Unit selfUnit, Action<Unit> onTriggerAbility)
     {
         if (target == TriggerUnitEvent_Target.Self)
         {
             switch (unitEvent)
             {
                 case (TriggerUnitEvent_Event.BeforeAttack):
-                    unit.unitBattle.OnUnit_BeforeAttack += onTriggerAbility;
+                    selfUnit.unitBattle.OnUnit_BeforeAttack += onTriggerAbility;
                     break;
                 case (TriggerUnitEvent_Event.AfterAttack):
-                    unit.unitBattle.OnUnit_AfterAttack += onTriggerAbility;
+                    selfUnit.unitBattle.OnUnit_AfterAttack += onTriggerAbility;
                     break;
                 case (TriggerUnitEvent_Event.BeforeTakeHit):
-                    unit.unitBattle.OnUnit_BeforeTakeHit += onTriggerAbility;
+                    selfUnit.unitBattle.OnUnit_BeforeTakeHit += onTriggerAbility;
                     break;
                 case (TriggerUnitEvent_Event.AfterTakeHit):
-                    unit.unitBattle.OnUnit_AfterTakeHit += onTriggerAbility;
+                    selfUnit.unitBattle.OnUnit_AfterTakeHit += onTriggerAbility;
                     break;
                 case (TriggerUnitEvent_Event.AfterShieldBreak):
-                    unit.unitBattle.OnUnit_AfterShieldBreak += onTriggerAbility;
+                    selfUnit.unitBattle.OnUnit_AfterShieldBreak += onTriggerAbility;
                     break;
                 case (TriggerUnitEvent_Event.AfterTakeDamage):
-                    unit.unitBattle.OnUnit_AfterTakeDamage += onTriggerAbility;
+                    selfUnit.unitBattle.OnUnit_AfterTakeDamage += onTriggerAbility;
                     break;
                 case (TriggerUnitEvent_Event.AfterSummoned):
-                    unit.unitBattle.OnUnit_AfterSummoned += onTriggerAbility;
+                    selfUnit.unitBattle.OnUnit_AfterSummoned += onTriggerAbility;
                     break;
                 case (TriggerUnitEvent_Event.BeforeDeath):
-                    unit.unitBattle.OnUnit_BeforeDeath += onTriggerAbility;
+                    selfUnit.unitBattle.OnUnit_BeforeDeath += onTriggerAbility;
                     break;
             }
         }
@@ -51,28 +51,28 @@ public class Trigger_UnitEvent : Trigger_Base
             switch (unitEvent)
             {
                 case (TriggerUnitEvent_Event.BeforeAttack):
-                    unit.unitBattle.OnAllyUnit_BeforeAttack += onTriggerAbility;
+                    selfUnit.unitBattle.OnAllyUnit_BeforeAttack += onTriggerAbility;
                     break;
                 case (TriggerUnitEvent_Event.AfterAttack):
-                    unit.unitBattle.OnAllyUnit_AfterAttack += onTriggerAbility;
+                    selfUnit.unitBattle.OnAllyUnit_AfterAttack += onTriggerAbility;
                     break;
                 case (TriggerUnitEvent_Event.BeforeTakeHit):
-                    unit.unitBattle.OnAllyUnit_BeforeTakeHit += onTriggerAbility;
+                    selfUnit.unitBattle.OnAllyUnit_BeforeTakeHit += onTriggerAbility;
                     break;
                 case (TriggerUnitEvent_Event.AfterTakeHit):
-                    unit.unitBattle.OnAllyUnit_AfterTakeHit += onTriggerAbility;
+                    selfUnit.unitBattle.OnAllyUnit_AfterTakeHit += onTriggerAbility;
                     break;
                 case (TriggerUnitEvent_Event.AfterShieldBreak):
-                    unit.unitBattle.OnAllyUnit_AfterShieldBreak += onTriggerAbility;
+                    selfUnit.unitBattle.OnAllyUnit_AfterShieldBreak += onTriggerAbility;
                     break;
                 case (TriggerUnitEvent_Event.AfterTakeDamage):
-                    unit.unitBattle.OnAllyUnit_AfterTakeDamage += onTriggerAbility;
+                    selfUnit.unitBattle.OnAllyUnit_AfterTakeDamage += onTriggerAbility;
                     break;
                 case (TriggerUnitEvent_Event.AfterSummoned):
-                    unit.unitBattle.OnAllyUnit_AfterSummoned += onTriggerAbility;
+                    selfUnit.unitBattle.OnAllyUnit_AfterSummoned += onTriggerAbility;
                     break;
                 case (TriggerUnitEvent_Event.BeforeDeath):
-                    unit.unitBattle.OnAllyUnit_BeforeDeath += onTriggerAbility;
+                    selfUnit.unitBattle.OnAllyUnit_BeforeDeath += onTriggerAbility;
                     break;
             }
         }
@@ -81,28 +81,28 @@ public class Trigger_UnitEvent : Trigger_Base
             switch (unitEvent)
             {
                 case (TriggerUnitEvent_Event.BeforeAttack):
-                    unit.unitBattle.OnEnemyUnit_BeforeAttack += onTriggerAbility;
+                    selfUnit.unitBattle.OnEnemyUnit_BeforeAttack += onTriggerAbility;
                     break;
                 case (TriggerUnitEvent_Event.AfterAttack):
-                    unit.unitBattle.OnEnemyUnit_AfterAttack += onTriggerAbility;
+                    selfUnit.unitBattle.OnEnemyUnit_AfterAttack += onTriggerAbility;
                     break;
                 case (TriggerUnitEvent_Event.BeforeTakeHit):
-                    unit.unitBattle.OnEnemyUnit_BeforeTakeHit += onTriggerAbility;
+                    selfUnit.unitBattle.OnEnemyUnit_BeforeTakeHit += onTriggerAbility;
                     break;
                 case (TriggerUnitEvent_Event.AfterTakeHit):
-                    unit.unitBattle.OnEnemyUnit_AfterTakeHit += onTriggerAbility;
+                    selfUnit.unitBattle.OnEnemyUnit_AfterTakeHit += onTriggerAbility;
                     break;
                 case (TriggerUnitEvent_Event.AfterShieldBreak):
-                    unit.unitBattle.OnEnemyUnit_AfterShieldBreak += onTriggerAbility;
+                    selfUnit.unitBattle.OnEnemyUnit_AfterShieldBreak += onTriggerAbility;
                     break;
                 case (TriggerUnitEvent_Event.AfterTakeDamage):
-                    unit.unitBattle.OnEnemyUnit_AfterTakeDamage += onTriggerAbility;
+                    selfUnit.unitBattle.OnEnemyUnit_AfterTakeDamage += onTriggerAbility;
                     break;
                 case (TriggerUnitEvent_Event.AfterSummoned):
-                    unit.unitBattle.OnEnemyUnit_AfterSummoned += onTriggerAbility;
+                    selfUnit.unitBattle.OnEnemyUnit_AfterSummoned += onTriggerAbility;
                     break;
                 case (TriggerUnitEvent_Event.BeforeDeath):
-                    unit.unitBattle.OnEnemyUnit_BeforeDeath += onTriggerAbility;
+                    selfUnit.unitBattle.OnEnemyUnit_BeforeDeath += onTriggerAbility;
                     break;
             }
         }
@@ -112,13 +112,84 @@ public class Trigger_UnitEvent : Trigger_Base
     {
 
     }
+
+    */
+    public override bool CheckTrigger(UnitLabel selflabel, UnitLabel triggererLabel, Trigger_Base trigger)
+    {
+        if (trigger.GetType() != this.GetType())
+        {
+            //Debug.LogWarning("Does not matched triggerType : " + this.GetType() + " > " + trigger.GetType());
+            return false;
+        }
+
+        //Cache Type
+        Trigger_UnitEvent _trigger = ((Trigger_UnitEvent)trigger);
+
+        if (_trigger.unitEvent != this.unitEvent)
+        {
+            //Debug.LogWarning("Does not matched unitEvent : " + unitEvent.ToString() + " > " + _trigger.unitEvent.ToString());
+            return false;
+        }
+
+        switch (target)
+        {
+            case TriggerUnitEvent_Target.Self:
+                if (selflabel.GetUnit() != triggererLabel.GetUnit())
+                {
+                    //Debug.LogWarning("Not the same unit");
+                    return false;
+                }
+                break;
+            case TriggerUnitEvent_Target.Ally:
+                if (selflabel.GetUnit() == triggererLabel.GetUnit())
+                {
+                    //Debug.LogWarning("Not the ally, it's self");
+                    return false;
+                }
+                if (selflabel.boxSide != triggererLabel.boxSide)
+                {
+                    //Debug.LogWarning("Not the same side");
+                    return false;
+                }
+                break;
+            case TriggerUnitEvent_Target.Enemy:
+                if (selflabel.boxSide == triggererLabel.boxSide)
+                {
+                    //Debug.LogWarning("Not the opposite side");
+                    return false;
+                }
+                break;
+            case TriggerUnitEvent_Target.AnyOther:
+                if (selflabel.GetUnit() == triggererLabel.GetUnit())
+                {
+                    //Debug.LogWarning("ingore self in anyOther");
+                    return false;
+                }
+                break;
+        }
+
+        Debug.Log("Trigger Matched");
+        return true;
+
+    }
+
+    public Trigger_UnitEvent(TriggerUnitEvent_Target target, TriggerUnitEvent_Event unitEvent)
+    {
+        this.target = target;
+        this.unitEvent = unitEvent;
+    }
+
+    public Trigger_UnitEvent(TriggerUnitEvent_Event unitEvent) : this(0, unitEvent) { }
+
+    public Trigger_UnitEvent() : this(0, 0) { }
 }
 
 public enum TriggerUnitEvent_Target
 {
     Self,
-    Ally,
-    Enemy
+    Ally,//beside self
+    Enemy,
+    AnyOther//Any other
 }
 
 public enum TriggerUnitEvent_Event

@@ -15,7 +15,7 @@ public class PassiveAbility : ScriptableAbility
     {
         return new List<Trigger_Base>()
         {
-            new Trigger_BattleEvent(),
+            new Trigger_TurnEvent(),
             new Trigger_UnitEvent()
         };
     }
@@ -52,14 +52,14 @@ public class PassiveAbility : ScriptableAbility
     [Title("Limit", "⏑", TitleAlignments.Centered)]
     public Limit_Base limit = new Limit_Base();
 
-    public void UninitializeAbility(Unit unit)
+    public void UninitializeAbility(Unit selfUnit)
     {
-        trigger.UnregisterTrigger(unit, OnTriggerAbility);
+        //trigger.UnregisterTrigger(selfUnit, OnTriggerAbility);
     }
 
-    public virtual void InitializeAbility(Unit unit)
+    public virtual void InitializeAbility(Unit selfUnit)
     {
-        trigger.RegisterTrigger(unit, OnTriggerAbility);
+        //trigger.RegisterTrigger(selfUnit, OnTriggerAbility);
     }
 
     public virtual void OnTriggerAbility(Unit selfUnit)//sub by trigger

@@ -153,8 +153,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerSide: 0
-  _allOwnBoxes: []
-  _allOwnUnits: []
+  allOwnBoxes: []
+  allOwnUnits: []
 --- !u!4 &36182203
 Transform:
   m_ObjectHideFlags: 0
@@ -568,12 +568,10 @@ MonoBehaviour:
   - unitDataList:
     - {fileID: 11400000, guid: c67f140469c5b1b4fa1022a0d1e8939b, type: 2}
     - {fileID: 11400000, guid: a595043f45c7293448eb528e1b8cf417, type: 2}
-    - {fileID: 11400000, guid: a595043f45c7293448eb528e1b8cf417, type: 2}
   rightBoxesUnits:
   - unitDataList:
     - {fileID: 11400000, guid: d3da1e47c875d1f41ae0b6d513acb2ee, type: 2}
-    - {fileID: 11400000, guid: d3da1e47c875d1f41ae0b6d513acb2ee, type: 2}
-    - {fileID: 11400000, guid: d3da1e47c875d1f41ae0b6d513acb2ee, type: 2}
+    - {fileID: 11400000, guid: c67f140469c5b1b4fa1022a0d1e8939b, type: 2}
 --- !u!4 &440379620
 Transform:
   m_ObjectHideFlags: 0
@@ -1113,6 +1111,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unit: {fileID: 0}
+  testS: 
+  trigger_UnitEvent:
+    target: 0
+    unitEvent: 0
+  unitLabel:
+    boxLabel:
+      boxSide: 0
+      boxNum: 0
+    orderInBox: 0
 --- !u!4 &1155828041
 Transform:
   m_ObjectHideFlags: 0
@@ -1237,7 +1244,7 @@ MonoBehaviour:
   leftBoxes: []
   rightBoxes: []
   leftPlayer: {fileID: 36182202}
-  rightPlayer: {fileID: 36182202}
+  rightPlayer: {fileID: 2141440505}
   _boardLayout: {fileID: 164007138}
   _boxPref: {fileID: 8416028487838961350, guid: 2d2eea8e5250bce438b2fa90ac063836, type: 3}
   _unitPref: {fileID: 8676933618571540064, guid: 5432cfae4864a174886959f6e61b737c, type: 3}
@@ -1406,8 +1413,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerSide: 1
-  _allOwnBoxes: []
-  _allOwnUnits: []
+  allOwnBoxes: []
+  allOwnUnits: []
 --- !u!4 &2141440506
 Transform:
   m_ObjectHideFlags: 0

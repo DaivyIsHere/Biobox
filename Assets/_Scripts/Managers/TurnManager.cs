@@ -81,11 +81,16 @@ public class TurnManager : Singleton<TurnManager>
     private void HandleBattleStart()
     {
         turnCount = 1;
+        UnitLabel label = new UnitLabel(new BoxLabel(currentSide, -1), -1);
+        BattleManager.Instance.TriggerBattleEvent(new UnitLabel(), new Trigger_TurnEvent(TriggerTurnEvent_When.Battle, TriggerTurnEvent_StartEnd.Start));
         UpdateTurnState(TurnState.TurnStart, 1f);
     }
 
     private void HandleTurnStart()
     {
+        UnitLabel label = new UnitLabel(new BoxLabel(currentSide, -1), -1);
+        BattleManager.Instance.TriggerBattleEvent(label, new Trigger_TurnEvent(TriggerTurnEvent_When.AnyTurn, TriggerTurnEvent_StartEnd.Start));
+        
         UpdateTurnState(TurnState.WaitForCurrentPlayer,1f);
     }
 
@@ -96,6 +101,9 @@ public class TurnManager : Singleton<TurnManager>
 
     private void HandleTurnEnd()
     {
+        UnitLabel label = new UnitLabel(new BoxLabel(currentSide, -1), -1);
+        BattleManager.Instance.TriggerBattleEvent(label, new Trigger_TurnEvent(TriggerTurnEvent_When.AnyTurn, TriggerTurnEvent_StartEnd.End));
+        
         currentSide = currentSide.Opposite();
         turnCount += 1;
         new CCAlignUnits().AddToQueue();

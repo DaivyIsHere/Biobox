@@ -26,7 +26,7 @@ public class LegacyPassiveAbility : ScriptableAbility
     public List<Type> triggerTypeList = new List<Type>
     {
         //typeof(Trigger_Base),
-        typeof(Trigger_BattleEvent),
+        typeof(Trigger_TurnEvent),
     };
 
 

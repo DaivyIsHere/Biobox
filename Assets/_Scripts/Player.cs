@@ -39,8 +39,8 @@ public class Player : MonoBehaviour
         AllOwnUnits();
 
         //UnitTrigger
-        foreach (var u in allOwnUnits)
-            u.unitBattle.OnBattleStart();
+        // foreach (var u in allOwnUnits)
+        //     u.unitBattle.OnBattleStart();
     }
 
     private void OnTurnEnd(BoxSide currentSide)
@@ -49,14 +49,14 @@ public class Player : MonoBehaviour
         {
             
             //UnitTrigger
-            foreach (var u in allOwnUnits)
-                u.unitBattle.OnSelfTurnEnd();
+            // foreach (var u in allOwnUnits)
+            //     u.unitBattle.OnSelfTurnEnd();
         }
         else
         {
             //UnitTrigger
-            foreach (var u in allOwnUnits)
-                u.unitBattle.OnOppoTurnEnd();
+            // foreach (var u in allOwnUnits)
+            //     u.unitBattle.OnOppoTurnEnd();
         }
     }
 
@@ -65,14 +65,14 @@ public class Player : MonoBehaviour
         if (currentSide == playerSide)
         {
             //UnitTrigger
-            foreach (var u in allOwnUnits)
-                u.unitBattle.OnSelfTurnStart();
+            // foreach (var u in allOwnUnits)
+            //     u.unitBattle.OnSelfTurnStart();
         }
         else
         {
             //UnitTrigger
-            foreach (var u in allOwnUnits)
-                u.unitBattle.OnOppoTurnStart();
+            // foreach (var u in allOwnUnits)
+            //     u.unitBattle.OnOppoTurnStart();
         }
     }
 

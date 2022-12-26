@@ -23,44 +23,44 @@ public class UnitBattle : MonoBehaviour
     [SerializeField] public UnitCID triggerUnit;
 
     ///INVOKED FROM PLAYER.CS
-    public event Action<Unit> OnUnit_BattleStart;
-    public event Action<Unit> OnUnit_SelfTurnStart;
-    public event Action<Unit> OnUnit_SelfTurnEnd;
-    public event Action<Unit> OnUnit_OppoTurnStart;
-    public event Action<Unit> OnUnit_OppoTurnEnd;
+    // public event Action<Unit> OnUnit_BattleStart;
+    // public event Action<Unit> OnUnit_SelfTurnStart;
+    // public event Action<Unit> OnUnit_SelfTurnEnd;
+    // public event Action<Unit> OnUnit_OppoTurnStart;
+    // public event Action<Unit> OnUnit_OppoTurnEnd;
 
     //Self
     ///INVOKED FROM THIS UNITBATTLE.CS
-    public event Action<Unit> OnUnit_BeforeAttack;//done
-    public event Action<Unit> OnUnit_AfterAttack;//done
-    public event Action<Unit> OnUnit_BeforeTakeHit;//done
-    public event Action<Unit> OnUnit_AfterTakeHit;//done
-    public event Action<Unit> OnUnit_AfterShieldBreak;//done
-    public event Action<Unit> OnUnit_AfterTakeDamage;//done
-    public event Action<Unit> OnUnit_AfterSummoned;//
-    public event Action<Unit> OnUnit_BeforeDeath;//done
+    // public event Action<Unit> OnUnit_BeforeAttack;//done
+    // public event Action<Unit> OnUnit_AfterAttack;//done
+    // public event Action<Unit> OnUnit_BeforeTakeHit;//done
+    // public event Action<Unit> OnUnit_AfterTakeHit;//done
+    // public event Action<Unit> OnUnit_AfterShieldBreak;//done
+    // public event Action<Unit> OnUnit_AfterTakeDamage;//done
+    // public event Action<Unit> OnUnit_AfterSummoned;//
+    // public event Action<Unit> OnUnit_BeforeDeath;//done
 
     //Ally
     ///INVOKED FROM THIS BATTLEMANAGER.INSTANCE
-    public event Action<Unit> OnAllyUnit_BeforeAttack;//
-    public event Action<Unit> OnAllyUnit_AfterAttack;//
-    public event Action<Unit> OnAllyUnit_BeforeTakeHit;//
-    public event Action<Unit> OnAllyUnit_AfterTakeHit;//
-    public event Action<Unit> OnAllyUnit_AfterShieldBreak;//
-    public event Action<Unit> OnAllyUnit_AfterTakeDamage;//
-    public event Action<Unit> OnAllyUnit_AfterSummoned;//
-    public event Action<Unit> OnAllyUnit_BeforeDeath;//
+    // public event Action<Unit> OnAllyUnit_BeforeAttack;//
+    // public event Action<Unit> OnAllyUnit_AfterAttack;//
+    // public event Action<Unit> OnAllyUnit_BeforeTakeHit;//
+    // public event Action<Unit> OnAllyUnit_AfterTakeHit;//
+    // public event Action<Unit> OnAllyUnit_AfterShieldBreak;//
+    // public event Action<Unit> OnAllyUnit_AfterTakeDamage;//
+    // public event Action<Unit> OnAllyUnit_AfterSummoned;//
+    // public event Action<Unit> OnAllyUnit_BeforeDeath;//
 
-    //Enemy
-    ///INVOKED FROM THIS BATTLEMANAGER.INSTANCE
-    public event Action<Unit> OnEnemyUnit_BeforeAttack;//
-    public event Action<Unit> OnEnemyUnit_AfterAttack;//
-    public event Action<Unit> OnEnemyUnit_BeforeTakeHit;//
-    public event Action<Unit> OnEnemyUnit_AfterTakeHit;//
-    public event Action<Unit> OnEnemyUnit_AfterShieldBreak;//
-    public event Action<Unit> OnEnemyUnit_AfterTakeDamage;//
-    public event Action<Unit> OnEnemyUnit_AfterSummoned;//
-    public event Action<Unit> OnEnemyUnit_BeforeDeath;//
+    // //Enemy
+    // ///INVOKED FROM THIS BATTLEMANAGER.INSTANCE
+    // public event Action<Unit> OnEnemyUnit_BeforeAttack;//
+    // public event Action<Unit> OnEnemyUnit_AfterAttack;//
+    // public event Action<Unit> OnEnemyUnit_BeforeTakeHit;//
+    // public event Action<Unit> OnEnemyUnit_AfterTakeHit;//
+    // public event Action<Unit> OnEnemyUnit_AfterShieldBreak;//
+    // public event Action<Unit> OnEnemyUnit_AfterTakeDamage;//
+    // public event Action<Unit> OnEnemyUnit_AfterSummoned;//
+    // public event Action<Unit> OnEnemyUnit_BeforeDeath;//
 
 
     [field: Header("Player Control")]
@@ -77,12 +77,6 @@ public class UnitBattle : MonoBehaviour
         _unit.UpdateShieldDisplay(_stats.shield.currentValue);
     }
 
-    public void AbilityTest()
-    {
-
-        //OnUnit_SelfTurnEnd?.Invoke(this._unit);
-    }
-
     private void IniStats()
     {
         _stats = new UnitStats(
@@ -96,8 +90,9 @@ public class UnitBattle : MonoBehaviour
     {
         passiveAbility = _unit.unitData.passiveAbility;
 
-        if (passiveAbility)
-            passiveAbility.InitializeAbility(_unit);
+        // if (passiveAbility)
+        //     BattleManager.Instance.OnTriggerBattleEvent += OnBattleEvent;
+            //passiveAbility.InitializeAbility(_unit);
     }
 
     public int GetStatValue(StatDefinition definition)
@@ -144,8 +139,9 @@ public class UnitBattle : MonoBehaviour
     public void InvokeBeforeTakeHit()
     {
         //Event hook//
-        OnUnit_BeforeTakeHit?.Invoke(_unit);
-        BattleManager.Instance.InvokeEvent_UnitBeforeTakeHit(_unit);
+        BattleManager.Instance.TriggerBattleEvent(_unit.unitLabel, new Trigger_UnitEvent(TriggerUnitEvent_Event.BeforeTakeHit));
+        //OnUnit_BeforeTakeHit?.Invoke(_unit);
+        //BattleManager.Instance.InvokeEvent_UnitBeforeTakeHit(_unit);
     }
 
     ///Need to call InvokeBeforeTakeHit() before calling this.
@@ -180,15 +176,17 @@ public class UnitBattle : MonoBehaviour
         }
 
         //Event Hook//
-        OnUnit_AfterTakeHit?.Invoke(_unit);
-        BattleManager.Instance.InvokeEvent_UnitAfterTakeHit(_unit);
+        BattleManager.Instance.TriggerBattleEvent(_unit.unitLabel, new Trigger_UnitEvent(TriggerUnitEvent_Event.AfterTakeHit));
+        //OnUnit_AfterTakeHit?.Invoke(_unit);
+        //BattleManager.Instance.InvokeEvent_UnitAfterTakeHit(_unit);
     }
 
     public void Attack()
     {
         //Event hook//
-        OnUnit_BeforeAttack?.Invoke(_unit);
-        BattleManager.Instance.InvokeEvent_UnitBeforeAttack(_unit);
+        BattleManager.Instance.TriggerBattleEvent(_unit.unitLabel, new Trigger_UnitEvent(TriggerUnitEvent_Event.BeforeAttack));
+        //OnUnit_BeforeAttack?.Invoke(_unit);
+       // BattleManager.Instance.InvokeEvent_UnitBeforeAttack(_unit);
 
         Unit target = BattleManager.Instance.GetFirstTargetByLabel(_unit.unitLabel);
         if (!target)
@@ -202,8 +200,9 @@ public class UnitBattle : MonoBehaviour
 
 
         //Event hook//
-        OnUnit_AfterAttack?.Invoke(_unit);
-        BattleManager.Instance.InvokeEvent_UnitAfterAttack(_unit);
+        //OnUnit_AfterAttack?.Invoke(_unit);
+        //BattleManager.Instance.InvokeEvent_UnitAfterAttack(_unit);
+        BattleManager.Instance.TriggerBattleEvent(_unit.unitLabel, new Trigger_UnitEvent(TriggerUnitEvent_Event.AfterAttack));
     }
 
     public void TakeStatModifier(StatDefinition definition, StatModifier modifier)
@@ -232,12 +231,13 @@ public class UnitBattle : MonoBehaviour
             {
                 _stats.health.ApplyModifier(modifier, float.MinValue, _stats.maxHealth.currentValue);
                 new CCUnitTakeDamage(_unit.unitCID, Mathf.Abs((int)modifier.value), _stats.health.currentValue, IsDead()).AddToQueue();
-                
+
                 if (IsDead())
                 {
                     //Event Hook//
-                    OnUnit_BeforeDeath?.Invoke(_unit);
-                    BattleManager.Instance.InvokeEvent_UnitBeforeDeath(_unit);
+                    //OnUnit_BeforeDeath?.Invoke(_unit);
+                    //BattleManager.Instance.InvokeEvent_UnitBeforeDeath(_unit);
+                    BattleManager.Instance.TriggerBattleEvent(_unit.unitLabel, new Trigger_UnitEvent(TriggerUnitEvent_Event.BeforeDeath));
 
                     new CCUnitDie(_unit.unitCID).AddToQueue();
                     Die();
@@ -248,8 +248,9 @@ public class UnitBattle : MonoBehaviour
                 }
 
                 //Event Hook//
-                OnUnit_AfterTakeDamage?.Invoke(_unit);
-                BattleManager.Instance.InvokeEvent_UnitAfterTakeDamage(_unit);
+                //OnUnit_AfterTakeDamage?.Invoke(_unit);
+                //BattleManager.Instance.InvokeEvent_UnitAfterTakeDamage(_unit);
+                BattleManager.Instance.TriggerBattleEvent(_unit.unitLabel, new Trigger_UnitEvent(TriggerUnitEvent_Event.AfterTakeDamage));
             }
 
 
@@ -277,11 +278,12 @@ public class UnitBattle : MonoBehaviour
 
             ///Check ShieldBreak
             ///TODO : Display shieldbreak animation
-            if(oldValue > 0 && _stats.shield.currentValue <= 0)
+            if (oldValue > 0 && _stats.shield.currentValue <= 0)
             {
                 //Event Hook//
-                OnUnit_AfterShieldBreak?.Invoke(_unit);
-                BattleManager.Instance.InvokeEvent_UnitAfterShieldBreak(_unit);
+                //OnUnit_AfterShieldBreak?.Invoke(_unit);
+                //BattleManager.Instance.InvokeEvent_UnitAfterShieldBreak(_unit);
+                BattleManager.Instance.TriggerBattleEvent(_unit.unitLabel, new Trigger_UnitEvent(TriggerUnitEvent_Event.AfterShieldBreak));
             }
         }
     }
@@ -304,29 +306,62 @@ public class UnitBattle : MonoBehaviour
         return _stats.health.currentValue <= 0;
     }
 
+    public void OnBattleEvent(UnitLabel triggererLabel, Trigger_Base trigger)
+    {
+        if(!passiveAbility)
+            return;
+            
+        if(passiveAbility.trigger.CheckTrigger(_unit.unitLabel, triggererLabel, trigger))
+            TriggerAbility();
+    }
+
+    public void TriggerAbility()
+    {
+        bool conditionMet = true;
+        foreach (var c in passiveAbility.conditions)
+        {
+            if (!c.ConditionMet(_unit))
+                conditionMet = false;
+        }
+
+        if (conditionMet)
+        {
+            Debug.Log("Perform ability");
+            new CCUnitStartAbility(_unit.unitCID).AddToQueue();
+            foreach (var a in passiveAbility.actions)
+            {
+                a.DoAction(_unit);
+            }
+
+            if (!IsDead())
+                new CCUnitEndAbility(_unit.unitCID).AddToQueue();
+        }
+    }
+
+
     //Event
-    public void OnBattleStart() => OnUnit_BattleStart?.Invoke(_unit);
-    public void OnSelfTurnStart() => OnUnit_SelfTurnStart?.Invoke(_unit);
-    public void OnSelfTurnEnd() => OnUnit_SelfTurnEnd?.Invoke(_unit);
-    public void OnOppoTurnStart() => OnUnit_OppoTurnStart?.Invoke(_unit);
-    public void OnOppoTurnEnd() => OnUnit_OppoTurnEnd?.Invoke(_unit);
+    // public void OnBattleStart() => OnUnit_BattleStart?.Invoke(_unit);
+    // public void OnSelfTurnStart() => OnUnit_SelfTurnStart?.Invoke(_unit);
+    // public void OnSelfTurnEnd() => OnUnit_SelfTurnEnd?.Invoke(_unit);
+    // public void OnOppoTurnStart() => OnUnit_OppoTurnStart?.Invoke(_unit);
+    // public void OnOppoTurnEnd() => OnUnit_OppoTurnEnd?.Invoke(_unit);
 
-    public void OnAlly_BeforeAttack() => OnAllyUnit_BeforeAttack?.Invoke(_unit);
-    public void OnAlly_AfterAttack() => OnAllyUnit_AfterAttack?.Invoke(_unit);
-    public void OnAlly_BeforeTakeHit() => OnAllyUnit_BeforeTakeHit?.Invoke(_unit);
-    public void OnAlly_AfterTakeHit() => OnAllyUnit_AfterTakeHit?.Invoke(_unit);
-    public void OnAlly_AfterShieldBreak() => OnAllyUnit_AfterShieldBreak?.Invoke(_unit);
-    public void OnAlly_AfterTakeDamage() => OnAllyUnit_AfterTakeDamage?.Invoke(_unit);
-    public void OnAlly_AfterSummoned() => OnAllyUnit_AfterSummoned?.Invoke(_unit);
-    public void OnAlly_BeforeDeath() => OnAllyUnit_BeforeDeath?.Invoke(_unit);
+    // public void OnAlly_BeforeAttack() => OnAllyUnit_BeforeAttack?.Invoke(_unit);
+    // public void OnAlly_AfterAttack() => OnAllyUnit_AfterAttack?.Invoke(_unit);
+    // public void OnAlly_BeforeTakeHit() => OnAllyUnit_BeforeTakeHit?.Invoke(_unit);
+    // public void OnAlly_AfterTakeHit() => OnAllyUnit_AfterTakeHit?.Invoke(_unit);
+    // public void OnAlly_AfterShieldBreak() => OnAllyUnit_AfterShieldBreak?.Invoke(_unit);
+    // public void OnAlly_AfterTakeDamage() => OnAllyUnit_AfterTakeDamage?.Invoke(_unit);
+    // public void OnAlly_AfterSummoned() => OnAllyUnit_AfterSummoned?.Invoke(_unit);
+    // public void OnAlly_BeforeDeath() => OnAllyUnit_BeforeDeath?.Invoke(_unit);
 
-    public void OnEnemy_BeforeAttack() => OnEnemyUnit_BeforeAttack?.Invoke(_unit);
-    public void OnEnemy_AfterAttack() => OnEnemyUnit_AfterAttack?.Invoke(_unit);
-    public void OnEnemy_BeforeTakeHit() => OnEnemyUnit_BeforeTakeHit?.Invoke(_unit);
-    public void OnEnemy_AfterTakeHit() => OnEnemyUnit_AfterTakeHit?.Invoke(_unit);
-    public void OnEnemy_AfterShieldBreak() => OnEnemyUnit_AfterShieldBreak?.Invoke(_unit);
-    public void OnEnemy_AfterTakeDamage() => OnEnemyUnit_AfterTakeDamage?.Invoke(_unit);
-    public void OnEnemy_AfterSummoned() => OnEnemyUnit_AfterSummoned?.Invoke(_unit);
-    public void OnEnemy_BeforeDeath() => OnEnemyUnit_BeforeDeath?.Invoke(_unit);
+    // public void OnEnemy_BeforeAttack() => OnEnemyUnit_BeforeAttack?.Invoke(_unit);
+    // public void OnEnemy_AfterAttack() => OnEnemyUnit_AfterAttack?.Invoke(_unit);
+    // public void OnEnemy_BeforeTakeHit() => OnEnemyUnit_BeforeTakeHit?.Invoke(_unit);
+    // public void OnEnemy_AfterTakeHit() => OnEnemyUnit_AfterTakeHit?.Invoke(_unit);
+    // public void OnEnemy_AfterShieldBreak() => OnEnemyUnit_AfterShieldBreak?.Invoke(_unit);
+    // public void OnEnemy_AfterTakeDamage() => OnEnemyUnit_AfterTakeDamage?.Invoke(_unit);
+    // public void OnEnemy_AfterSummoned() => OnEnemyUnit_AfterSummoned?.Invoke(_unit);
+    // public void OnEnemy_BeforeDeath() => OnEnemyUnit_BeforeDeath?.Invoke(_unit);
 
 }

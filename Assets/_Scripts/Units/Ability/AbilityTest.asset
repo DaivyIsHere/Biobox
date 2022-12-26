@@ -14,32 +14,32 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   info: 
   trigger:
-    rid: 7277847238141018265
+    rid: 7277847282832637960
   conditions: []
   actions:
-  - rid: 7277847238141018278
+  - rid: 7277847282832637957
   limit:
     times: -1
     per: 0
   references:
     version: 2
     RefIds:
-    - rid: 7277847238141018265
-      type: {class: Trigger_BattleEvent, ns: , asm: Assembly-CSharp}
-      data:
-        when: 3
-        startEnd: 1
-    - rid: 7277847238141018278
+    - rid: 7277847282832637957
       type: {class: Action_StatMod, ns: , asm: Assembly-CSharp}
       data:
         target:
-          rid: 7277847238141018279
-        statDefinition: {fileID: 11400000, guid: a2b62202b3e8a1745ae009f28ea3c9cb, type: 2}
+          rid: 7277847282832637958
+        statDefinition: {fileID: 11400000, guid: 7b4d0ca39d87dd94cbc53d3f198b19f6, type: 2}
         statModifier:
           value: 1
           type: 0
           order: 0
-    - rid: 7277847238141018279
+    - rid: 7277847282832637958
       type: {class: Target_Relative, ns: , asm: Assembly-CSharp}
       data:
         position: 0
+    - rid: 7277847282832637960
+      type: {class: Trigger_TurnEvent, ns: , asm: Assembly-CSharp}
+      data:
+        when: 3
+        startEnd: 1

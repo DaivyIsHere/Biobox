@@ -9,10 +9,13 @@ using UnityEditor;
 public class TestScript : MonoBehaviour
 {
     public Unit unit;
+    public string testS;
+    public Trigger_UnitEvent trigger_UnitEvent;
+    public UnitLabel unitLabel;
 
     public void RunTest()
     {
-        unit.unitBattle.AbilityTest();
+        unit.unitBattle.passiveAbility.trigger.CheckTrigger(unit.unitLabel, unitLabel, trigger_UnitEvent);
         //unit.unitBattle.OnBattleStart();
     }
 }
